@@ -2,14 +2,24 @@ import { readFileSync } from 'fs'
 import { glob } from 'glob'
 
 export const parseFiles = async (
-  input: string[]
-): Promise<Set<string>> => {
+  input: string[],
+  { defaultNamespace }: { defaultNamespace: string }
+): Promise<Record<string, Set<string>>> => {
   const files = await getFileList(input)
-  const results = new Set<string>()
+  const results: Record<string, Set<string>> = {}
 
   await Promise.all(files.map(async filePath => {
-    const result = await parseFile(filePath)
-    result.forEach(results.add, results)
+    const fileResults = await parseFile(filePath)
+    fileResults.forEach(fullKey => {
+      const [namespace, key] = fullKey.includes(':')
+        ? fullKey.split(':', 2)
+        : [defaultNamespace, fullKey]
+
+      if (!results[namespace]) {
+        results[namespace] = new Set<string>()
+      }
+      results[namespace].add(key)
+    })
   }))
 
   return results
@@ -23,7 +33,7 @@ export const getFileList = async (
 ): Promise<string[]> => {
   const _input = input.filter(v => !v.startsWith('!'))
   const ignore = input.filter(v => v.startsWith('!')).map(v => v.substring(1))
-  return await glob(_input, {ignore})
+  return await glob(_input, { ignore })
 }
 
 /**

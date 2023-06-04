@@ -7,22 +7,26 @@ import { getFileList, parseContent, parseFile, parseFiles } from '@/parse'
  */
 describe('parseFiles', () => {
   it('should parse all files', async () => {
-    expect(Array.from(
-      await parseFiles([
-        'tests/example/src/**/*.vue',
-        'tests/example/src/**/*.ts',
-        '!**/__tests__/**'
-      ])
-    ).sort()).toStrictEqual([
-      'common:key_2',
+    const results = await parseFiles([
+      'tests/example/src/**/*.vue',
+      'tests/example/src/**/*.ts',
+      '!**/__tests__/**'
+    ], {
+      defaultNamespace: 'common'
+    })
+
+    expect(Object.keys(results)).toStrictEqual(['common', 'other'])
+    expect(Array.from(results.common).sort()).toStrictEqual([
       'context.key_1',
       'context.key_2',
       'context.nested.key',
       'key_1',
       'key_2',
-      'key_3',
-      'other:key_1',
-      'other:other_key'
+      'key_3'
+    ])
+    expect(Array.from(results.other).sort()).toStrictEqual([
+      'key_1',
+      'other_key'
     ])
   })
 })

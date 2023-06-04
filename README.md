@@ -15,13 +15,14 @@ i18n-extract ./i18n-extract.config.cjs
 module.exports = {
   input: [
     'src/**/*.vue',
-    'src/**/*.ts'
+    'src/**/*.ts',
+    // Don't extract from tests
+    '!**/__tests__/**'
   ],
+  // Example: locales/de/common.json
   output: 'locales/{{lng}}/{{ns}}.json',
   languages: ['de', 'en-GB'],
-  namespaces: {
-    all: ['common', 'other'],
-    default: 'common'
-  }
+  // Optional: Default namespace if none given in translation
+  defaultNamespace: 'common'
 }
 ```

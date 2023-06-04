@@ -6,8 +6,5 @@ module.exports = {
   ],
   output: 'tests/example/locales/{{lng}}/{{ns}}.json',
   languages: ['de', 'en-GB'],
-  namespaces: {
-    all: ['common', 'other'],
-    default: 'common'
-  }
+  defaultNamespace: 'common'
 }
