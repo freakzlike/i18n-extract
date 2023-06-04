@@ -1,8 +1,5 @@
-export type InputPattern = string | string[]
-
 export interface I18nExtractOptions {
-  input: InputPattern
-  ignore?: InputPattern
+  input: string[]
   output: string
   languages: string[]
   namespaces?: {

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import path from 'node:path'
-import { getFileList, parseContent, parseFile, parseFiles } from '@/extract'
+import { getFileList, parseContent, parseFile, parseFiles } from '@/parse'
 
 /**
  * parseFiles
@@ -10,9 +10,8 @@ describe('parseFiles', () => {
     expect(Array.from(
       await parseFiles([
         'tests/example/src/**/*.vue',
-        'tests/example/src/**/*.ts'
-      ], [
-        '**/__tests__/**'
+        'tests/example/src/**/*.ts',
+        '!**/__tests__/**'
       ])
     ).sort()).toStrictEqual([
       'common:key_2',
@@ -37,7 +36,7 @@ describe('getFileList', () => {
 
   it('should return list of single files', async () => {
     expect(normalizePaths(
-      await getFileList('tests/example/src/**/*.vue')
+      await getFileList(['tests/example/src/**/*.vue'])
     )).toStrictEqual([
       'tests/example/src/vue-file.vue'
     ])
@@ -61,9 +60,8 @@ describe('getFileList', () => {
     expect(normalizePaths(
       await getFileList([
         'tests/example/src/**/*.vue',
-        'tests/example/src/**/*.ts'
-      ], [
-        '**/__tests__/**'
+        'tests/example/src/**/*.ts',
+        '!**/__tests__/**'
       ])
     )).toStrictEqual([
       'tests/example/src/vue-file.vue',
