@@ -12,7 +12,7 @@ module.exports = {
     sourceType: 'module'
   },
   ignorePatterns: [
-    'tests/example/**/*'
+    'examples/namespaces/**/*'
   ],
   plugins: ['@typescript-eslint']
 }

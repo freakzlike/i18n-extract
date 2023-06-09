@@ -1,12 +1,13 @@
 import { readFileSync } from 'fs'
 import { glob } from 'glob'
+import { Namespace, ParseResult, TranslationKeyList } from '@/types'
 
 export const parseFiles = async (
   input: string[],
-  { defaultNamespace }: { defaultNamespace: string }
-): Promise<Record<string, Set<string>>> => {
+  { defaultNamespace }: { defaultNamespace: Namespace }
+): Promise<ParseResult> => {
   const files = await getFileList(input)
-  const results: Record<string, Set<string>> = {}
+  const results: ParseResult = {}
 
   await Promise.all(files.map(async filePath => {
     const fileResults = await parseFile(filePath)
@@ -16,7 +17,7 @@ export const parseFiles = async (
         : [defaultNamespace, fullKey]
 
       if (!results[namespace]) {
-        results[namespace] = new Set<string>()
+        results[namespace] = new Set()
       }
       results[namespace].add(key)
     })
@@ -39,7 +40,7 @@ export const getFileList = async (
 /**
  * Parse file
  */
-export const parseFile = async (filePath: string): Promise<Set<string>> => {
+export const parseFile = async (filePath: string): Promise<TranslationKeyList> => {
   const content = readFileSync(filePath, { encoding: 'utf8' })
   return parseContent(content)
 }
@@ -47,9 +48,9 @@ export const parseFile = async (filePath: string): Promise<Set<string>> => {
 /**
  * Parse content and return found translation keys
  */
-export const parseContent = async (content: string): Promise<Set<string>> => {
+export const parseContent = async (content: string): Promise<TranslationKeyList> => {
   const regex = /\B\$t\s*\(\s*['"]([\w/: ._-]+)['"]/g
-  const matches = new Set<string>()
+  const matches: TranslationKeyList = new Set()
   let match
   do {
     match = regex.exec(content)

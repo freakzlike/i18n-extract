@@ -27,7 +27,7 @@
     "test": "vitest",
     "lint": "eslint src/ tests/ --ext .ts --ignore-path .gitignore",
     "lint:fix": "pnpm run lint --fix",
-    "demo:cli": "node bin/cli.cjs tests/example/i18n-extract.config.cjs"
+    "demo:cli": "node bin/cli.cjs examples/namespaces/i18n-extract.config.cjs"
   },
   "dependencies": {
     "glob": "^10.2.6"

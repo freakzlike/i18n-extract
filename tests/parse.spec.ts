@@ -8,8 +8,8 @@ import { getFileList, parseContent, parseFile, parseFiles } from '@/parse'
 describe('parseFiles', () => {
   it('should parse all files', async () => {
     const results = await parseFiles([
-      'tests/example/src/**/*.vue',
-      'tests/example/src/**/*.ts',
+      'examples/namespaces/src/**/*.vue',
+      'examples/namespaces/src/**/*.ts',
       '!**/__tests__/**'
     ], {
       defaultNamespace: 'common'
@@ -40,37 +40,37 @@ describe('getFileList', () => {
 
   it('should return list of single files', async () => {
     expect(normalizePaths(
-      await getFileList(['tests/example/src/**/*.vue'])
+      await getFileList(['examples/namespaces/src/**/*.vue'])
     )).toStrictEqual([
-      'tests/example/src/vue-file.vue'
+      'examples/namespaces/src/vue-file.vue'
     ])
   })
 
   it('should return list of files', async () => {
     expect(normalizePaths(
       await getFileList([
-        'tests/example/src/**/*.vue',
-        'tests/example/src/**/*.ts'
+        'examples/namespaces/src/**/*.vue',
+        'examples/namespaces/src/**/*.ts'
       ])
     )).toStrictEqual([
-      'tests/example/src/vue-file.vue',
-      'tests/example/src/typescript-file.ts',
-      'tests/example/src/i18n.ts',
-      'tests/example/src/__tests__/some-test.ts'
+      'examples/namespaces/src/vue-file.vue',
+      'examples/namespaces/src/typescript-file.ts',
+      'examples/namespaces/src/i18n.ts',
+      'examples/namespaces/src/__tests__/some-test.ts'
     ])
   })
 
   it('should return list of files with ignore', async () => {
     expect(normalizePaths(
       await getFileList([
-        'tests/example/src/**/*.vue',
-        'tests/example/src/**/*.ts',
+        'examples/namespaces/src/**/*.vue',
+        'examples/namespaces/src/**/*.ts',
         '!**/__tests__/**'
       ])
     )).toStrictEqual([
-      'tests/example/src/vue-file.vue',
-      'tests/example/src/typescript-file.ts',
-      'tests/example/src/i18n.ts'
+      'examples/namespaces/src/vue-file.vue',
+      'examples/namespaces/src/typescript-file.ts',
+      'examples/namespaces/src/i18n.ts'
     ])
   })
 })
@@ -80,7 +80,7 @@ describe('getFileList', () => {
  */
 describe('parseFile', () => {
   it('should parse translations of typescript file', async () => {
-    const filePath = path.join(__dirname, 'example/src/typescript-file.ts')
+    const filePath = path.join(__dirname, '../examples/namespaces/src/typescript-file.ts')
     expect(await parseFile(filePath)).toStrictEqual(new Set([
       'key_1',
       'common:key_2',
@@ -93,7 +93,7 @@ describe('parseFile', () => {
   })
 
   it('should parse translations of vue file', async () => {
-    const filePath = path.join(__dirname, 'example/src/vue-file.vue')
+    const filePath = path.join(__dirname, '../examples/namespaces/src/vue-file.vue')
     expect(await parseFile(filePath)).toStrictEqual(new Set([
       'key_1',
       'context.key_1',
