@@ -1,0 +1,13 @@
+{
+  "key_1": "Key 1 DE",
+  "key_2": "Key 2 DE",
+  "key_3": "Key 3 DE",
+  "key_4": "Key 4 DE",
+  "context": {
+    "key_1": "Context Key 1 DE",
+    "key_2": "Context Key 2 DE",
+    "nested": {
+      "key": "Nested Key DE"
+    }
+  }
+}

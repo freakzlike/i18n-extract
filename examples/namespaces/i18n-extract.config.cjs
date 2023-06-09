@@ -6,5 +6,6 @@ module.exports = {
   ],
   output: 'examples/namespaces/locales/{{lng}}/{{ns}}.json',
   languages: ['de', 'en-GB'],
-  defaultNamespace: 'common'
+  defaultNamespace: 'common',
+  namespaces: ['common', 'other']
 }

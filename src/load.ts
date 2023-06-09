@@ -5,7 +5,7 @@ export const loadTranslations = async (
   pathTemplate: string,
   { languages, namespaces }: {
     languages: Language[],
-    namespaces: Namespace[] | undefined
+    namespaces?: Namespace[]
   }
 ): Promise<TranslationMap> => {
   const _namespaces = namespaces?.length ? namespaces : ['default']

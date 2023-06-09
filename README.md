@@ -19,10 +19,13 @@ module.exports = {
     // Don't extract from tests
     '!**/__tests__/**'
   ],
+  // Output path with placeholders
   // Example: locales/de/common.json
   output: 'locales/{{lng}}/{{ns}}.json',
   languages: ['de', 'en-GB'],
   // Optional: Default namespace if none given in translation
-  defaultNamespace: 'common'
+  defaultNamespace: 'common',
+  // Optional: Namespaces
+  namespaces: ['common', 'other']
 }
 ```

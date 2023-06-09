@@ -1,0 +1,13 @@
+{
+  "key_1": "Key 1 EN",
+  "key_2": "Key 2 EN",
+  "key_3": "Key 3 EN",
+  "key_4": "Key 4 EN",
+  "context": {
+    "key_1": "Context Key 1 EN",
+    "key_2": "Context Key 2 EN",
+    "nested": {
+      "key": "Nested Key EN"
+    }
+  }
+}
