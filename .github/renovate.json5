@@ -19,7 +19,7 @@
       "groupName": "all non-major dependencies",
       "groupSlug": "all-minor-patch",
       "schedule": [
-        "after 1am on Wednesday"
+        "on Wednesday"
       ]
     }
   ]
