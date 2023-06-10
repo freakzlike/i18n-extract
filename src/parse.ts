@@ -1,13 +1,15 @@
 import { readFileSync } from 'fs'
 import { glob } from 'glob'
-import { Namespace, ParseResult, TranslationKeyList } from '@/types'
+import { Namespace, ParseResult, TranslationKey } from '@/types'
+
+type TranslationKeyList = Set<TranslationKey>
 
 export const parseFiles = async (
   input: string[],
   { defaultNamespace }: { defaultNamespace: Namespace }
 ): Promise<ParseResult> => {
   const files = await getFileList(input)
-  const results: ParseResult = {}
+  const results: Record<Namespace, TranslationKeyList> = {}
 
   await Promise.all(files.map(async filePath => {
     const fileResults = await parseFile(filePath)
@@ -23,7 +25,10 @@ export const parseFiles = async (
     })
   }))
 
-  return results
+  return Object.entries(results).reduce<ParseResult>((obj, [namespace, values]) => {
+    obj[namespace] = [...values].sort()
+    return obj
+  }, {})
 }
 
 /**

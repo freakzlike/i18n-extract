@@ -16,7 +16,7 @@ describe('parseFiles', () => {
     })
 
     expect(Object.keys(results)).toStrictEqual(['common', 'other'])
-    expect(Array.from(results.common).sort()).toStrictEqual([
+    expect(results.common).toStrictEqual([
       'context.key_1',
       'context.key_2',
       'context.nested.key',
@@ -24,7 +24,7 @@ describe('parseFiles', () => {
       'key_2',
       'key_3'
     ])
-    expect(Array.from(results.other).sort()).toStrictEqual([
+    expect(results.other).toStrictEqual([
       'key_1',
       'other_key'
     ])

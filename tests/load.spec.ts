@@ -58,13 +58,12 @@ describe('loadTranslations', () => {
       }
     }
 
-    expect(await loadTranslations(
-      'examples/namespaces/locales/{{lng}}/{{ns}}.json',
-      {
-        languages: ['de', 'en-GB'],
-        namespaces: ['common', 'other']
-      }
-    )).toStrictEqual(expectedResult)
+    expect(await loadTranslations({
+      input: ['src/**'],
+      output: 'examples/namespaces/locales/{{lng}}/{{ns}}.json',
+      languages: ['de', 'en-GB'],
+      namespaces: ['common', 'other']
+    })).toStrictEqual(expectedResult)
   })
 
   it('should load translations from files without namespaces', async () => {
@@ -107,11 +106,10 @@ describe('loadTranslations', () => {
       }
     }
 
-    expect(await loadTranslations(
-      'examples/default/locales/{{lng}}.json',
-      {
-        languages: ['de', 'en-GB']
-      }
-    )).toStrictEqual(expectedResult)
+    expect(await loadTranslations({
+      input: ['src/**'],
+      output: 'examples/default/locales/{{lng}}.json',
+      languages: ['de', 'en-GB']
+    })).toStrictEqual(expectedResult)
   })
 })
