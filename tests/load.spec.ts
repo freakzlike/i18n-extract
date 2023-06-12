@@ -21,7 +21,8 @@ describe('loadTranslations', () => {
               nested: {
                 key: 'Nested Key DE'
               }
-            }
+            },
+            old_key: 'Old key'
           }
         },
         other: {
@@ -45,7 +46,8 @@ describe('loadTranslations', () => {
               nested: {
                 key: 'Nested Key EN'
               }
-            }
+            },
+            old_key: 'Old key'
           }
         },
         other: {
@@ -72,9 +74,9 @@ describe('loadTranslations', () => {
         default: {
           filePath: 'examples/default/locales/de.json',
           translations: {
+            key_3: 'Key 3 DE',
             key_1: 'Key 1 DE',
             key_2: 'Key 2 DE',
-            key_3: 'Key 3 DE',
             key_4: 'Key 4 DE',
             context: {
               key_1: 'Context Key 1 DE',
@@ -82,7 +84,8 @@ describe('loadTranslations', () => {
               nested: {
                 key: 'Nested Key DE'
               }
-            }
+            },
+            old_key: 'Old key'
           }
         }
       },
@@ -90,9 +93,9 @@ describe('loadTranslations', () => {
         default: {
           filePath: 'examples/default/locales/en-GB.json',
           translations: {
+            key_3: 'Key 3 EN',
             key_1: 'Key 1 EN',
             key_2: 'Key 2 EN',
-            key_3: 'Key 3 EN',
             key_4: 'Key 4 EN',
             context: {
               key_1: 'Context Key 1 EN',
@@ -100,7 +103,8 @@ describe('loadTranslations', () => {
               nested: {
                 key: 'Nested Key EN'
               }
-            }
+            },
+            old_key: 'Old key'
           }
         }
       }
@@ -111,5 +115,20 @@ describe('loadTranslations', () => {
       output: 'examples/default/locales/{{lng}}.json',
       languages: ['de', 'en-GB']
     })).toStrictEqual(expectedResult)
+  })
+
+  it('should handle missing file', async () => {
+    expect(await loadTranslations({
+      input: ['src/**'],
+      output: 'examples/default/locales/{{lng}}.json',
+      languages: ['fr']
+    })).toStrictEqual({
+      fr: {
+        default: {
+          filePath: 'examples/default/locales/fr.json',
+          translations: {}
+        }
+      }
+    })
   })
 })

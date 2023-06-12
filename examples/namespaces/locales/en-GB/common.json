@@ -8,5 +8,6 @@
     "nested": {
       "key": "Nested Key EN"
     }
-  }
+  },
+  "old_key": "Old key"
 }

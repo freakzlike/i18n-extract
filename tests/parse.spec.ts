@@ -22,7 +22,8 @@ describe('parseFiles', () => {
       'context.nested.key',
       'key_1',
       'key_2',
-      'key_3'
+      'key_3',
+      'new_key'
     ])
     expect(results.other).toStrictEqual([
       'key_1',
@@ -88,7 +89,8 @@ describe('parseFile', () => {
       'key_3',
       'context.key_1',
       'context.key_2',
-      'context.nested.key'
+      'context.nested.key',
+      'new_key'
     ]))
   })
 

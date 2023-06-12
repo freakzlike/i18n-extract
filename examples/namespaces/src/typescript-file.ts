@@ -14,6 +14,7 @@ $t(   "key_3"   )
 $t('context.key_1')
 $t('context.key_2')
 $t('context.nested.key')
+$t('new_key')
 
 /**
  * Not parse this

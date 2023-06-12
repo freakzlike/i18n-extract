@@ -1,4 +1,4 @@
-import { I18nExtractOptions, Language, Namespace, TranslationMap, TranslationStructure } from '@/types'
+import { I18nExtractOptions, Language, Namespace, TranslationMap, TranslationStructure } from './types'
 
 export const generateTranslationMap = async (
   options: I18nExtractOptions,

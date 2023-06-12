@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs'
 import { glob } from 'glob'
-import { Namespace, ParseResult, TranslationKey } from '@/types'
+import { Namespace, ParseResult, TranslationKey } from './types'
 
 type TranslationKeyList = Set<TranslationKey>
 

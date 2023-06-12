@@ -1,6 +1,6 @@
 import { readFileSync, existsSync } from 'fs'
-import { TranslationMap, I18nExtractOptions } from '@/types'
-import { generateTranslationMap } from '@/utils'
+import { TranslationMap, I18nExtractOptions } from './types'
+import { generateTranslationMap } from './utils'
 
 export const loadTranslations = async (
   options: I18nExtractOptions
