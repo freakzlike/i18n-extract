@@ -1,7 +1,7 @@
 {
   "name": "@freakzlike/i18n-extract",
   "description": "Minimalistic and low dependency translation key extractor",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "license": "MIT",
   "author": {
     "name": "Freakzlike"
@@ -37,7 +37,7 @@
     "lint": "eslint src/ tests/ --ext .ts --ignore-path .gitignore",
     "lint:fix": "pnpm run lint --fix",
     "demo:cli": "node bin/cli.cjs examples/namespaces/i18n-extract.config.cjs",
-    "release": "semantic-release"
+    "release": "semantic-release --no-ci"
   },
   "dependencies": {
     "glob": "^10.2.6"
