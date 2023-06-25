@@ -1,3 +1,10 @@
+## [0.1.1](https://github.com/freakzlike/i18n-extract/compare/v0.1.0...v0.1.1) (2023-06-25)
+
+
+### Bug Fixes
+
+* **release:** Add missing CHANGELOG and fix automatic release ([2c5e977](https://github.com/freakzlike/i18n-extract/commit/2c5e9775c549ef97ba082d658b9663d7b153f56d))
+
 # [0.1.0](https://github.com/freakzlike/i18n-extract/compare/v0.0.1...v0.1.0) (2023-06-25)
 
 
