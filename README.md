@@ -29,6 +29,8 @@ module.exports = {
   // Optional: Default namespace if none given in translation
   defaultNamespace: 'common',
   // Optional: Namespaces
-  namespaces: ['common', 'other']
+  namespaces: ['common', 'other'],
+  // Default value for new translations
+  defaultValue: '__MISSING_TRANSLATION__'
 }
 ```

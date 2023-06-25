@@ -18,4 +18,5 @@ export interface I18nExtractOptions {
   languages: Language[]
   defaultNamespace?: Namespace
   namespaces?: Namespace[]
+  defaultValue?: string
 }

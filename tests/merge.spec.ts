@@ -1,15 +1,22 @@
 import { describe, expect, it } from 'vitest'
 import { writeTranslationStructure } from '@/merge'
+import { I18nExtractOptions } from '@/types'
 
 /**
  * writeTranslationStructure
  */
 describe('writeTranslationStructure', () => {
+  const defaultOptions: I18nExtractOptions = {
+    input: ['src/**'],
+    output: 'examples/default/locales/{{lng}}.json',
+    languages: ['de', 'en-GB']
+  }
+
   it('should write simple translation key', async () => {
     expect(await writeTranslationStructure('key_1', {
       key_1: 'Key 1',
       key_2: 'Key 2'
-    }, {})).toStrictEqual({
+    }, {}, defaultOptions)).toStrictEqual({
       key_1: 'Key 1',
     })
   })
@@ -19,7 +26,7 @@ describe('writeTranslationStructure', () => {
       key_1: 'Key 1'
     }, {
       key_2: 'Key 2'
-    })).toStrictEqual({
+    }, defaultOptions)).toStrictEqual({
       key_1: 'Key 1',
       key_2: 'Key 2'
     })
@@ -28,8 +35,19 @@ describe('writeTranslationStructure', () => {
   it('should write simple translation key with missing translation', async () => {
     expect(await writeTranslationStructure('key_1', {
       key_2: 'Key 2'
-    }, {})).toStrictEqual({
+    }, {}, defaultOptions)).toStrictEqual({
       key_1: '__MISSING_TRANSLATION__',
+    })
+  })
+
+  it('should write simple translation key with missing translation', async () => {
+    expect(await writeTranslationStructure('key_1', {
+      key_2: 'Key 2'
+    }, {}, {
+      ...defaultOptions,
+      defaultValue: '__NEW_KEY__'
+    })).toStrictEqual({
+      key_1: '__NEW_KEY__',
     })
   })
 
@@ -38,7 +56,7 @@ describe('writeTranslationStructure', () => {
       key_1: {
         nested: '1'
       }
-    }, {})).toStrictEqual({
+    }, {}, defaultOptions)).toStrictEqual({
       key_1: '__MISSING_TRANSLATION__',
     })
   })
@@ -49,7 +67,7 @@ describe('writeTranslationStructure', () => {
         nested: 'Nested translation',
         other: 'other'
       }
-    }, {})).toStrictEqual({
+    }, {}, defaultOptions)).toStrictEqual({
       context: {
         nested: 'Nested translation'
       }
@@ -65,7 +83,7 @@ describe('writeTranslationStructure', () => {
           }
         }
       }
-    }, {})).toStrictEqual({
+    }, {}, defaultOptions)).toStrictEqual({
       context: {
         nested: {
           more: {
@@ -81,7 +99,7 @@ describe('writeTranslationStructure', () => {
       context: {
         other: 'other'
       }
-    }, {})).toStrictEqual({
+    }, {}, defaultOptions)).toStrictEqual({
       context: {
         nested: '__MISSING_TRANSLATION__'
       }
@@ -98,7 +116,7 @@ describe('writeTranslationStructure', () => {
       context: {
         other: 'other'
       }
-    })).toStrictEqual({
+    }, defaultOptions)).toStrictEqual({
       key: 'key',
       context: {
         nested: 'Nested translation',
@@ -114,7 +132,7 @@ describe('writeTranslationStructure', () => {
       }
     }, {
       context: 'Context'
-    })).toStrictEqual({
+    }, defaultOptions)).toStrictEqual({
       context: {
         nested: 'Nested translation'
       }

@@ -13,7 +13,7 @@ export const generateNewTranslations = async (
     const _translationKeys = translationKeys[namespace] || []
     const _existingTranslations = existingTranslations[language]?.[namespace]?.translations || {}
     for (const translationKey of _translationKeys) {
-      translations = await writeTranslationStructure(translationKey, _existingTranslations, translations)
+      translations = await writeTranslationStructure(translationKey, _existingTranslations, translations, options)
     }
 
     return translations
@@ -29,7 +29,8 @@ const mapTranslationStructure = (
 export const writeTranslationStructure = async (
   translationKey: string,
   existingTranslations: TranslationStructure,
-  translations: TranslationStructure
+  translations: TranslationStructure,
+  options: I18nExtractOptions
 ): Promise<TranslationStructure> => {
   const contextIdx = translationKey.indexOf('.')
   if (contextIdx > -1) {
@@ -38,12 +39,13 @@ export const writeTranslationStructure = async (
     translations[context] = await writeTranslationStructure(
       nestedKey,
       mapTranslationStructure(existingTranslations[context]),
-      mapTranslationStructure(translations[context])
+      mapTranslationStructure(translations[context]),
+      options
     )
   } else if (typeof existingTranslations[translationKey] === 'string') {
     translations[translationKey] = existingTranslations[translationKey]
   } else {
-    translations[translationKey] = '__MISSING_TRANSLATION__'
+    translations[translationKey] = options.defaultValue || '__MISSING_TRANSLATION__'
   }
   return translations
 }
