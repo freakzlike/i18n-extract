@@ -1,3 +1,10 @@
+## [0.1.2](https://github.com/freakzlike/i18n-extract/compare/v0.1.1...v0.1.2) (2023-06-25)
+
+
+### Bug Fixes
+
+* **release:** fix automatic release ([eafbc22](https://github.com/freakzlike/i18n-extract/commit/eafbc220a517bf8c2db8958afff50cbac3dccd37))
+
 ## [0.1.1](https://github.com/freakzlike/i18n-extract/compare/v0.1.0...v0.1.1) (2023-06-25)
 
 
