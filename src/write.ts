@@ -7,13 +7,14 @@ export const writeTranslations = async (
 ): Promise<void> => {
   await Promise.all(Object.values(translationResults).map(async (languageTranslations) => {
     await Promise.all(Object.values(languageTranslations).map(async ({ filePath, translations }) => {
+      const content = JSON.stringify(translations, undefined, 2)
 
       const directory = dirname(filePath)
       if (!existsSync(directory)) {
         mkdirSync(directory, { recursive: true })
       }
 
-      writeFileSync(filePath, JSON.stringify(translations, undefined, 2))
+      writeFileSync(filePath, `${content}\n`)
     }))
   }))
 }

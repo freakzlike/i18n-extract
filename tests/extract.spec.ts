@@ -15,7 +15,7 @@ beforeEach(() => {
   mockedMkdir.mockReset().mockReturnValue(undefined)
 })
 
-const toJSON = (v: unknown) => JSON.stringify(v, undefined, 2)
+const toJSON = (v: unknown) => `${JSON.stringify(v, undefined, 2)}\n`
 
 /**
  * i18nExtract
