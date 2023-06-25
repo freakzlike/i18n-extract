@@ -1,5 +1,8 @@
 # @freakzlike/i18n-extract
 
+[![Latest Version](https://img.shields.io/npm/v/@freakzlike/i18n-extract.svg)](https://www.npmjs.com/package/@freakzlike/i18n-extract)
+[![License](https://img.shields.io/npm/l/i18n-extract.svg)](https://github.com/freakzlike/i18n-extract/blob/main/LICENSE)
+
 Minimalistic and low dependency translation key extractor
 
 ## Execute
