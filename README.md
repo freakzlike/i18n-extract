@@ -5,6 +5,11 @@
 
 Minimalistic and low dependency translation key extractor
 
+Requirements:
+* Node.js >= `18.15.0`
+
+Might as well work with lower Node.js versions. Developed and tested on `18.15.0`.
+
 ## Execute
 
 Extracts translations from source files and writes translation files:
