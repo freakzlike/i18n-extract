@@ -1,5 +1,5 @@
 import { readFileSync } from 'fs'
-import { glob } from 'glob'
+import fastGlob from 'fast-glob'
 import type { Namespace, ParseResult, TranslationKey } from './types'
 import { I18nExtractOptions } from './types'
 
@@ -37,11 +37,7 @@ export const parseFiles = async (
  */
 export const getFileList = async (
   input: string[]
-): Promise<string[]> => {
-  const _input = input.filter(v => !v.startsWith('!'))
-  const ignore = input.filter(v => v.startsWith('!')).map(v => v.substring(1))
-  return await glob(_input, { ignore })
-}
+): Promise<string[]> => await fastGlob(input)
 
 /**
  * Parse file

@@ -8,7 +8,7 @@ function createEntry (options) {
   const config = {
     input: 'src/index.ts',
     external: [
-      'glob'
+      'fast-glob'
     ],
     plugins: [
       resolve(),
