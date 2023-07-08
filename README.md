@@ -7,8 +7,17 @@ Minimalistic and low dependency translation key extractor
 
 ## Execute
 
+Extracts translations from source files and writes translation files:
+
 ```shell
 i18n-extract ./i18n-extract.config.cjs
+```
+
+Extract translations from source files and checks for untranslated messages.
+Can be used in CI and does not write the translation files.
+
+```shell
+i18n-check ./i18n-extract.config.cjs
 ```
 
 ## Config
