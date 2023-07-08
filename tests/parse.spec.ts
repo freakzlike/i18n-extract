@@ -87,9 +87,9 @@ describe('getFileList', () => {
         'examples/namespaces/src/**/*.ts'
       ])
     )).toStrictEqual([
-      'examples/namespaces/src/vue-file.vue',
-      'examples/namespaces/src/typescript-file.ts',
       'examples/namespaces/src/i18n.ts',
+      'examples/namespaces/src/typescript-file.ts',
+      'examples/namespaces/src/vue-file.vue',
       'examples/namespaces/src/__tests__/some-test.ts'
     ])
   })
@@ -102,9 +102,9 @@ describe('getFileList', () => {
         '!**/__tests__/**'
       ])
     )).toStrictEqual([
-      'examples/namespaces/src/vue-file.vue',
+      'examples/namespaces/src/i18n.ts',
       'examples/namespaces/src/typescript-file.ts',
-      'examples/namespaces/src/i18n.ts'
+      'examples/namespaces/src/vue-file.vue'
     ])
   })
 })
