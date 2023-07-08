@@ -1,3 +1,11 @@
+# [0.2.0](https://github.com/freakzlike/i18n-extract/compare/v0.1.2...v0.2.0) (2023-07-08)
+
+
+### Features
+
+* CLI to check for untranslated messages ([#11](https://github.com/freakzlike/i18n-extract/issues/11)) ([3b0b315](https://github.com/freakzlike/i18n-extract/commit/3b0b315865e7f1adc63c81b4400340aedc210670))
+* switch from glob to fast-glob ([#13](https://github.com/freakzlike/i18n-extract/issues/13)) ([111f3d5](https://github.com/freakzlike/i18n-extract/commit/111f3d535761005fd29865152728d10c5672e516))
+
 ## [0.1.2](https://github.com/freakzlike/i18n-extract/compare/v0.1.1...v0.1.2) (2023-06-25)
 
 
