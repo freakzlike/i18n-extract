@@ -16,9 +16,18 @@ describe('writeTranslationStructure', () => {
     expect(await writeTranslationStructure('key_1', {
       key_1: 'Key 1',
       key_2: 'Key 2'
-    }, {}, defaultOptions)).toStrictEqual({
-      key_1: 'Key 1',
-    })
+    }, {}, {
+      translations: {},
+      untranslatedCount: 0
+    }, defaultOptions)).toStrictEqual([
+      {
+        key_1: 'Key 1'
+      },
+      {
+        translations: expect.any(Object),
+        untranslatedCount: 0
+      }
+    ])
   })
 
   it('should merge simple translation key', async () => {
@@ -26,29 +35,56 @@ describe('writeTranslationStructure', () => {
       key_1: 'Key 1'
     }, {
       key_2: 'Key 2'
-    }, defaultOptions)).toStrictEqual({
-      key_1: 'Key 1',
-      key_2: 'Key 2'
-    })
-  })
-
-  it('should write simple translation key with missing translation', async () => {
-    expect(await writeTranslationStructure('key_1', {
-      key_2: 'Key 2'
-    }, {}, defaultOptions)).toStrictEqual({
-      key_1: '__MISSING_TRANSLATION__',
-    })
+    }, {
+      translations: {},
+      untranslatedCount: 0
+    }, defaultOptions)).toStrictEqual([
+      {
+        key_1: 'Key 1',
+        key_2: 'Key 2'
+      },
+      {
+        translations: expect.any(Object),
+        untranslatedCount: 0
+      }
+    ])
   })
 
   it('should write simple translation key with missing translation', async () => {
     expect(await writeTranslationStructure('key_1', {
       key_2: 'Key 2'
     }, {}, {
+      translations: {},
+      untranslatedCount: 0
+    }, defaultOptions)).toStrictEqual([
+      {
+        key_1: '__MISSING_TRANSLATION__'
+      },
+      {
+        translations: expect.any(Object),
+        untranslatedCount: 1
+      }
+    ])
+  })
+
+  it('should write simple translation key with missing translation', async () => {
+    expect(await writeTranslationStructure('key_1', {
+      key_2: 'Key 2'
+    }, {}, {
+      translations: {},
+      untranslatedCount: 5
+    }, {
       ...defaultOptions,
       defaultValue: '__NEW_KEY__'
-    })).toStrictEqual({
-      key_1: '__NEW_KEY__',
-    })
+    })).toStrictEqual([
+      {
+        key_1: '__NEW_KEY__'
+      },
+      {
+        translations: expect.any(Object),
+        untranslatedCount: 6
+      }
+    ])
   })
 
   it('should write missing translation key if different context', async () => {
@@ -56,9 +92,18 @@ describe('writeTranslationStructure', () => {
       key_1: {
         nested: '1'
       }
-    }, {}, defaultOptions)).toStrictEqual({
-      key_1: '__MISSING_TRANSLATION__',
-    })
+    }, {}, {
+      translations: {},
+      untranslatedCount: 0
+    }, defaultOptions)).toStrictEqual([
+      {
+        key_1: '__MISSING_TRANSLATION__'
+      },
+      {
+        translations: expect.any(Object),
+        untranslatedCount: 1
+      }
+    ])
   })
 
   it('should write nested translation key', async () => {
@@ -67,11 +112,20 @@ describe('writeTranslationStructure', () => {
         nested: 'Nested translation',
         other: 'other'
       }
-    }, {}, defaultOptions)).toStrictEqual({
-      context: {
-        nested: 'Nested translation'
+    }, {}, {
+      translations: {},
+      untranslatedCount: 0
+    }, defaultOptions)).toStrictEqual([
+      {
+        context: {
+          nested: 'Nested translation'
+        }
+      },
+      {
+        translations: expect.any(Object),
+        untranslatedCount: 0
       }
-    })
+    ])
   })
 
   it('should write multiple nested translation key', async () => {
@@ -83,15 +137,24 @@ describe('writeTranslationStructure', () => {
           }
         }
       }
-    }, {}, defaultOptions)).toStrictEqual({
-      context: {
-        nested: {
-          more: {
-            key: 'Key'
+    }, {}, {
+      translations: {},
+      untranslatedCount: 0
+    }, defaultOptions)).toStrictEqual([
+      {
+        context: {
+          nested: {
+            more: {
+              key: 'Key'
+            }
           }
         }
+      },
+      {
+        translations: expect.any(Object),
+        untranslatedCount: 0
       }
-    })
+    ])
   })
 
   it('should write nested translation key with missing translation', async () => {
@@ -99,11 +162,20 @@ describe('writeTranslationStructure', () => {
       context: {
         other: 'other'
       }
-    }, {}, defaultOptions)).toStrictEqual({
-      context: {
-        nested: '__MISSING_TRANSLATION__'
+    }, {}, {
+      translations: {},
+      untranslatedCount: 2
+    }, defaultOptions)).toStrictEqual([
+      {
+        context: {
+          nested: '__MISSING_TRANSLATION__'
+        }
+      },
+      {
+        translations: expect.any(Object),
+        untranslatedCount: 3
       }
-    })
+    ])
   })
 
   it('should merge nested translation key', async () => {
@@ -116,13 +188,22 @@ describe('writeTranslationStructure', () => {
       context: {
         other: 'other'
       }
-    }, defaultOptions)).toStrictEqual({
-      key: 'key',
-      context: {
-        nested: 'Nested translation',
-        other: 'other'
+    }, {
+      translations: {},
+      untranslatedCount: 0
+    }, defaultOptions)).toStrictEqual([
+      {
+        key: 'key',
+        context: {
+          nested: 'Nested translation',
+          other: 'other'
+        }
+      },
+      {
+        translations: expect.any(Object),
+        untranslatedCount: 0
       }
-    })
+    ])
   })
 
   it('should handle existing string on nested translation', async () => {
@@ -132,10 +213,19 @@ describe('writeTranslationStructure', () => {
       }
     }, {
       context: 'Context'
-    }, defaultOptions)).toStrictEqual({
-      context: {
-        nested: 'Nested translation'
+    }, {
+      translations: {},
+      untranslatedCount: 0
+    }, defaultOptions)).toStrictEqual([
+      {
+        context: {
+          nested: 'Nested translation'
+        }
+      },
+      {
+        translations: expect.any(Object),
+        untranslatedCount: 0
       }
-    })
+    ])
   })
 })

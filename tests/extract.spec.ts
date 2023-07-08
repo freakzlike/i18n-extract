@@ -131,4 +131,49 @@ describe('i18nExtract', () => {
       new_key: '__MISSING_TRANSLATION__'
     }))
   })
+
+  it('should extract translations all translated', async () => {
+    const options = await import('../examples/translated/i18n-extract.config.cjs')
+    await i18nExtract(options.default)
+
+    expect(mockedMkdir).not.toHaveBeenCalled()
+
+    expect(mockedWriteFile).toHaveBeenCalledTimes(2)
+
+    expect(mockedWriteFile).toHaveBeenCalledWith('examples/translated/locales/de.json', toJSON({
+      key_1: 'Key 1 DE',
+      key_2: 'Key 2 DE',
+      key_3: 'Key 3 DE'
+    }))
+    expect(mockedWriteFile).toHaveBeenCalledWith('examples/translated/locales/en-GB.json', toJSON({
+      key_1: 'Key 1 EN',
+      key_2: 'Key 2 EN',
+      key_3: 'Key 3 EN'
+    }))
+  })
+
+  it('should extract translations with new translation', async () => {
+    const options = await import('../examples/new/i18n-extract.config.cjs')
+    await i18nExtract(options.default)
+
+    expect(mockedMkdir).not.toHaveBeenCalled()
+
+    expect(mockedWriteFile).toHaveBeenCalledTimes(4)
+
+    expect(mockedWriteFile).toHaveBeenCalledWith('examples/new/locales/de/default.json', toJSON({
+      key_1: 'Key 1 DE',
+      key_2: 'Key 2 DE'
+    }))
+    expect(mockedWriteFile).toHaveBeenCalledWith('examples/new/locales/de/other.json', toJSON({
+      key_1: '__MISSING_TRANSLATION__'
+    }))
+
+    expect(mockedWriteFile).toHaveBeenCalledWith('examples/new/locales/en-GB/default.json', toJSON({
+      key_1: 'Key 1 EN',
+      key_2: 'Key 2 EN'
+    }))
+    expect(mockedWriteFile).toHaveBeenCalledWith('examples/new/locales/en-GB/other.json', toJSON({
+      key_1: '__MISSING_TRANSLATION__'
+    }))
+  })
 })
