@@ -1,14 +1,21 @@
 import { readFileSync, existsSync } from 'fs'
-import { TranslationMap, I18nExtractOptions } from './types'
+import type { TranslationMapLoad, I18nExtractOptions, TranslationStructure } from './types'
 import { generateTranslationMap } from './utils'
 
 export const loadTranslations = async (
   options: I18nExtractOptions
-): Promise<TranslationMap> => {
-  return generateTranslationMap(options, ({ filePath }) => {
-    if (!existsSync(filePath)) return {}
+): Promise<TranslationMapLoad> => {
+  return generateTranslationMap(options, async ({ filePath }) => {
+    let translations: TranslationStructure = {}
 
-    const rawContent = readFileSync(filePath, { encoding: 'utf8' })
-    return JSON.parse(rawContent)
+    if (existsSync(filePath)) {
+      const rawContent = readFileSync(filePath, { encoding: 'utf8' })
+      translations = JSON.parse(rawContent)
+    }
+
+    return {
+      filePath,
+      translations
+    }
   })
 }

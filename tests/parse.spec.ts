@@ -7,15 +7,18 @@ import { getFileList, parseContent, parseFile, parseFiles } from '@/parse'
  */
 describe('parseFiles', () => {
   it('should parse all files', async () => {
-    const results = await parseFiles([
-      'examples/namespaces/src/**/*.vue',
-      'examples/namespaces/src/**/*.ts',
-      '!**/__tests__/**'
-    ], {
+    const results = await parseFiles({
+      input: [
+        'examples/namespaces/src/**/*.vue',
+        'examples/namespaces/src/**/*.ts',
+        '!**/__tests__/**'
+      ],
+      output: 'examples/default/locales/{{lng}}.json',
+      languages: ['de', 'en-GB'],
       defaultNamespace: 'common'
     })
 
-    expect(Object.keys(results)).toStrictEqual(['common', 'other'])
+    expect(Object.keys(results).sort()).toStrictEqual(['common', 'other'])
     expect(results.common).toStrictEqual([
       'context.key_1',
       'context.key_2',
@@ -24,6 +27,36 @@ describe('parseFiles', () => {
       'key_2',
       'key_3',
       'new_key'
+    ])
+    expect(results.other).toStrictEqual([
+      'key_1',
+      'other_key'
+    ])
+  })
+
+  it('should parse all files with default namespace', async () => {
+    const results = await parseFiles({
+      input: [
+        'examples/namespaces/src/**/*.vue',
+        'examples/namespaces/src/**/*.ts',
+        '!**/__tests__/**'
+      ],
+      output: 'examples/default/locales/{{lng}}.json',
+      languages: ['de', 'en-GB']
+    })
+
+    expect(Object.keys(results).sort()).toStrictEqual(['common', 'default', 'other'])
+    expect(results.default).toStrictEqual([
+      'context.key_1',
+      'context.key_2',
+      'context.nested.key',
+      'key_1',
+      'key_2',
+      'key_3',
+      'new_key'
+    ])
+    expect(results.common).toStrictEqual([
+      'key_2'
     ])
     expect(results.other).toStrictEqual([
       'key_1',

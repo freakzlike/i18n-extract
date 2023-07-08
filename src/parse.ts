@@ -1,14 +1,15 @@
 import { readFileSync } from 'fs'
 import { glob } from 'glob'
-import { Namespace, ParseResult, TranslationKey } from './types'
+import type { Namespace, ParseResult, TranslationKey } from './types'
+import { I18nExtractOptions } from './types'
 
 type TranslationKeyList = Set<TranslationKey>
 
 export const parseFiles = async (
-  input: string[],
-  { defaultNamespace }: { defaultNamespace: Namespace }
+  options: I18nExtractOptions
 ): Promise<ParseResult> => {
-  const files = await getFileList(input)
+  const files = await getFileList(options.input)
+  const defaultNamespace = options.defaultNamespace || 'default'
   const results: Record<Namespace, TranslationKeyList> = {}
 
   await Promise.all(files.map(async filePath => {

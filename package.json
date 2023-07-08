@@ -21,7 +21,8 @@
   ],
   "main": "./dist/i18n-extract.cjs",
   "bin": {
-    "i18n-extract": "./bin/cli.cjs"
+    "i18n-extract": "./bin/extract.cjs",
+    "i18n-check": "./bin/check.cjs"
   },
   "module": "./dist/i18n-extract.js",
   "exports": {
@@ -36,7 +37,8 @@
     "test": "vitest --coverage",
     "lint": "eslint src/ tests/ --ext .ts --ignore-path .gitignore",
     "lint:fix": "pnpm run lint --fix",
-    "demo:cli": "node bin/cli.cjs examples/namespaces/i18n-extract.config.cjs",
+    "demo:extract": "node bin/extract.cjs examples/namespaces/i18n-extract.config.cjs",
+    "demo:check": "node bin/check.cjs examples/namespaces/i18n-extract.config.cjs",
     "release": "semantic-release --no-ci"
   },
   "dependencies": {
@@ -54,11 +56,11 @@
     "@vitest/coverage-v8": "0.33.0",
     "eslint": "8.44.0",
     "rimraf": "5.0.1",
-    "rollup": "3.26.1",
+    "rollup": "3.26.2",
     "semantic-release": "21.0.7",
     "tslib": "2.6.0",
     "typescript": "5.1.6",
-    "vite": "4.3.9",
+    "vite": "4.4.2",
     "vitest": "0.33.0"
   }
 }

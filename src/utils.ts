@@ -1,16 +1,22 @@
-import { I18nExtractOptions, Language, Namespace, TranslationMap, TranslationStructure } from './types'
+import type {
+  I18nExtractOptions,
+  Language,
+  Namespace,
+  TranslationMap,
+  TranslationResult
+} from './types'
 
-export const generateTranslationMap = async (
+export const generateTranslationMap = async <T extends TranslationResult> (
   options: I18nExtractOptions,
   callback: (params: {
     filePath: string,
     language: Language,
     namespace: Namespace
-  }) => Promise<TranslationStructure>
-): Promise<TranslationMap> => {
+  }) => Promise<T>
+): Promise<TranslationMap<T>> => {
   const namespaces = options.namespaces?.length ? options.namespaces : ['default']
 
-  const results: TranslationMap = {}
+  const results: TranslationMap<T> = {}
   await Promise.all(options.languages.map(async language => {
     results[language] = {}
 
@@ -19,13 +25,15 @@ export const generateTranslationMap = async (
         .replaceAll('{{lng}}', language)
         .replaceAll('{{ns}}', namespace)
 
-      results[language][namespace] = {
+      const _result = await callback({
         filePath,
-        translations: await callback({
-          filePath,
-          language,
-          namespace
-        })
+        language,
+        namespace
+      })
+
+      results[language][namespace] = {
+        ..._result,
+        filePath
       }
     }))
   }))

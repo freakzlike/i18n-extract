@@ -1,22 +1,42 @@
-import type { I18nExtractOptions, ParseResult, TranslationMap } from './types'
-import { TranslationStructure, TranslationValue } from './types'
+import type {
+  I18nExtractOptions,
+  ParseResult,
+  TranslationMapLoad,
+  TranslationMapWrite,
+  TranslationResultWrite,
+  TranslationStructure,
+  TranslationValue
+} from './types'
 import { generateTranslationMap } from './utils'
 
 export const generateNewTranslations = async (
   translationKeys: ParseResult,
-  existingTranslations: TranslationMap,
+  existingTranslations: TranslationMapLoad,
   options: I18nExtractOptions
-): Promise<TranslationMap> => {
+): Promise<TranslationMapWrite> => {
   return generateTranslationMap(options, async ({ language, namespace }) => {
     let translations: TranslationStructure = {}
+    let result: TranslationResultWrite = {
+      translations,
+      untranslatedCount: 0
+    }
 
     const _translationKeys = translationKeys[namespace] || []
     const _existingTranslations = existingTranslations[language]?.[namespace]?.translations || {}
     for (const translationKey of _translationKeys) {
-      translations = await writeTranslationStructure(translationKey, _existingTranslations, translations, options)
+      [translations, result] = await writeTranslationStructure(
+        translationKey,
+        _existingTranslations,
+        translations,
+        result,
+        options
+      )
     }
 
-    return translations
+    return {
+      ...result,
+      translations
+    }
   })
 }
 
@@ -30,22 +50,41 @@ export const writeTranslationStructure = async (
   translationKey: string,
   existingTranslations: TranslationStructure,
   translations: TranslationStructure,
+  result: TranslationResultWrite,
   options: I18nExtractOptions
-): Promise<TranslationStructure> => {
+): Promise<[TranslationStructure, TranslationResultWrite]> => {
   const contextIdx = translationKey.indexOf('.')
+  // Nested translation
   if (contextIdx > -1) {
     const context = translationKey.substring(0, contextIdx)
     const nestedKey = translationKey.substring(contextIdx + 1)
-    translations[context] = await writeTranslationStructure(
+    const [_translations, _result] = await writeTranslationStructure(
       nestedKey,
       mapTranslationStructure(existingTranslations[context]),
       mapTranslationStructure(translations[context]),
+      result,
       options
     )
-  } else if (typeof existingTranslations[translationKey] === 'string') {
+
+    translations[context] = _translations
+
+    return [
+      translations,
+      _result
+    ]
+  }
+
+  // String translation
+
+  const defaultTranslation = options.defaultValue || '__MISSING_TRANSLATION__'
+
+  if (typeof existingTranslations[translationKey] === 'string') {
     translations[translationKey] = existingTranslations[translationKey]
   } else {
-    translations[translationKey] = options.defaultValue || '__MISSING_TRANSLATION__'
+    translations[translationKey] = defaultTranslation
   }
-  return translations
+  if (translations[translationKey] === defaultTranslation) {
+    result.untranslatedCount++
+  }
+  return [translations, result]
 }
