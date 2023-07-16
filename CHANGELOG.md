@@ -1,3 +1,15 @@
+# [1.0.0](https://github.com/freakzlike/i18n-extract/compare/v0.2.0...v1.0.0) (2023-07-16)
+
+
+### Features
+
+* Bump version to 1.0.0 ([7d1b116](https://github.com/freakzlike/i18n-extract/commit/7d1b116028a591f242cb9fadd4704408fa4e4c29))
+
+
+### BREAKING CHANGES
+
+* Only version bump
+
 # [0.2.0](https://github.com/freakzlike/i18n-extract/compare/v0.1.2...v0.2.0) (2023-07-08)
 
 
