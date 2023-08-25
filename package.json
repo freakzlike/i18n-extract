@@ -53,7 +53,7 @@
     "@types/node": "18.17.9",
     "@typescript-eslint/eslint-plugin": "6.4.1",
     "@typescript-eslint/parser": "6.4.1",
-    "@vitest/coverage-v8": "0.34.2",
+    "@vitest/coverage-v8": "0.34.3",
     "eslint": "8.47.0",
     "rimraf": "5.0.1",
     "rollup": "3.28.1",
@@ -61,7 +61,7 @@
     "tslib": "2.6.2",
     "typescript": "5.1.6",
     "vite": "4.4.9",
-    "vitest": "0.34.2"
+    "vitest": "0.34.3"
   },
   "engines": {
     "node": ">=v18.15.0"
