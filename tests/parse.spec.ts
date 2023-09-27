@@ -1,22 +1,25 @@
 import { describe, expect, it } from 'vitest'
 import path from 'node:path'
 import { getFileList, parseContent, parseFile, parseFiles } from '@/parse'
+import type { I18nExtractOptions } from '@/types'
+
+const options: I18nExtractOptions = {
+  input: [
+    'examples/namespaces/src/**/*.vue',
+    'examples/namespaces/src/**/*.ts',
+    '!**/__tests__/**'
+  ],
+  output: 'examples/default/locales/{{lng}}.json',
+  languages: ['de', 'en-GB'],
+  defaultNamespace: 'common'
+}
 
 /**
  * parseFiles
  */
 describe('parseFiles', () => {
   it('should parse all files', async () => {
-    const results = await parseFiles({
-      input: [
-        'examples/namespaces/src/**/*.vue',
-        'examples/namespaces/src/**/*.ts',
-        '!**/__tests__/**'
-      ],
-      output: 'examples/default/locales/{{lng}}.json',
-      languages: ['de', 'en-GB'],
-      defaultNamespace: 'common'
-    })
+    const results = await parseFiles(options)
 
     expect(Object.keys(results).sort()).toStrictEqual(['common', 'other'])
     expect(results.common).toStrictEqual([
@@ -36,13 +39,8 @@ describe('parseFiles', () => {
 
   it('should parse all files with default namespace', async () => {
     const results = await parseFiles({
-      input: [
-        'examples/namespaces/src/**/*.vue',
-        'examples/namespaces/src/**/*.ts',
-        '!**/__tests__/**'
-      ],
-      output: 'examples/default/locales/{{lng}}.json',
-      languages: ['de', 'en-GB']
+      ...options,
+      defaultNamespace: undefined
     })
 
     expect(Object.keys(results).sort()).toStrictEqual(['common', 'default', 'other'])
@@ -115,7 +113,7 @@ describe('getFileList', () => {
 describe('parseFile', () => {
   it('should parse translations of typescript file', async () => {
     const filePath = path.join(__dirname, '../examples/namespaces/src/typescript-file.ts')
-    expect(await parseFile(filePath)).toStrictEqual(new Set([
+    expect(await parseFile(options, filePath)).toStrictEqual(new Set([
       'key_1',
       'common:key_2',
       'other:key_1',
@@ -129,7 +127,7 @@ describe('parseFile', () => {
 
   it('should parse translations of vue file', async () => {
     const filePath = path.join(__dirname, '../examples/namespaces/src/vue-file.vue')
-    expect(await parseFile(filePath)).toStrictEqual(new Set([
+    expect(await parseFile(options, filePath)).toStrictEqual(new Set([
       'key_1',
       'context.key_1',
       'other:other_key',
@@ -142,7 +140,7 @@ describe('parseFile', () => {
  * parseContent
  */
 describe('parseContent', () => {
-  const parseToArray = async (content: string) => Array.from(await parseContent(content))
+  const parseToArray = async (content: string) => Array.from(await parseContent(options, content))
 
   it('should find translations from content', async () => {
     expect(await parseToArray('$t("key_1")')).toStrictEqual(['key_1'])
@@ -181,6 +179,13 @@ describe('parseContent', () => {
     expect(await parseToArray(`$t('tra
         nslate'`
     )).toStrictEqual([])
+  })
+
+  it('should parse with custom regex', async () => {
+    expect(Array.from(await parseContent({
+      ...options,
+      parseRegex: /\B\$tc\s*\(\s*['"]([\w/: ._-]+)['"]/g
+    }, '$tc("key_1")'))).toStrictEqual(['key_1'])
   })
 })
 

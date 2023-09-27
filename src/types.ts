@@ -27,4 +27,5 @@ export interface I18nExtractOptions {
   defaultNamespace?: Namespace
   namespaces?: Namespace[]
   defaultValue?: string
+  parseRegex?: RegExp
 }

@@ -3,9 +3,23 @@
 [![Latest Version](https://img.shields.io/npm/v/@freakzlike/i18n-extract.svg)](https://www.npmjs.com/package/@freakzlike/i18n-extract)
 [![License](https://img.shields.io/npm/l/i18n-extract.svg)](https://github.com/freakzlike/i18n-extract/blob/main/LICENSE)
 
-Minimalistic and low dependency translation key extractor
+Minimalistic and low dependency translation key extractor.
 
-Requirements:
+Searchs for usage of `$t` and writes keys to JSON files.
+
+Input from source code
+```javascript
+$t('some_key')
+```
+
+Output to translation file
+```json
+{
+  "some_key": "__MISSING_TRANSLATION__"
+}
+```
+
+## Requirements
 * Node.js >= `18.15.0`
 
 Might as well work with lower Node.js versions. Developed and tested on `18.15.0`.
@@ -44,7 +58,9 @@ module.exports = {
   defaultNamespace: 'common',
   // Optional: Namespaces
   namespaces: ['common', 'other'],
-  // Default value for new translations
-  defaultValue: '__MISSING_TRANSLATION__'
+  // Optional: Default value for new translations
+  defaultValue: '__MISSING_TRANSLATION__',
+  // Optional: Regex to extract transations from source code
+  parseRegex: /\B\$t\s*\(\s*['"]([\w/: ._-]+)['"]/g
 }
 ```

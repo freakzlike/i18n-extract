@@ -13,7 +13,7 @@ export const parseFiles = async (
   const results: Record<Namespace, TranslationKeyList> = {}
 
   await Promise.all(files.map(async filePath => {
-    const fileResults = await parseFile(filePath)
+    const fileResults = await parseFile(options, filePath)
     fileResults.forEach(fullKey => {
       const [namespace, key] = fullKey.includes(':')
         ? fullKey.split(':', 2)
@@ -42,16 +42,16 @@ export const getFileList = async (
 /**
  * Parse file
  */
-export const parseFile = async (filePath: string): Promise<TranslationKeyList> => {
+export const parseFile = async (options: I18nExtractOptions, filePath: string): Promise<TranslationKeyList> => {
   const content = readFileSync(filePath, { encoding: 'utf8' })
-  return parseContent(content)
+  return parseContent(options, content)
 }
 
 /**
  * Parse content and return found translation keys
  */
-export const parseContent = async (content: string): Promise<TranslationKeyList> => {
-  const regex = /\B\$t\s*\(\s*['"]([\w/: ._-]+)['"]/g
+export const parseContent = async (options: I18nExtractOptions, content: string): Promise<TranslationKeyList> => {
+  const regex = options.parseRegex ?? /\B\$t\s*\(\s*['"]([\w/: ._-]+)['"]/g
   const matches: TranslationKeyList = new Set()
   let match
   do {
