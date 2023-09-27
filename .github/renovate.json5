@@ -18,9 +18,13 @@
       "matchCurrentVersion": ">=1",
       "groupName": "all non-major dependencies",
       "groupSlug": "all-minor-patch",
-      "schedule": [
-        "on Wednesday"
-      ]
+      "extends": ["schedule:monthly"]
     }
-  ]
+  ],
+  lockFileMaintenance: {
+    enabled: true,
+    "groupName": "all non-major dependencies",
+    "groupSlug": "all-minor-patch",
+    "extends": ["schedule:monthly"]
+  }
 }
