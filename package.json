@@ -1,7 +1,7 @@
 {
   "name": "@freakzlike/i18n-extract",
   "description": "Minimalistic and low dependency translation key extractor",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "license": "MIT",
   "author": {
     "name": "Freakzlike"

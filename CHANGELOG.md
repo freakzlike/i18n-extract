@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/freakzlike/i18n-extract/compare/v1.0.0...v1.1.0) (2023-09-27)
+
+
+### Features
+
+* Add config for parse regex ([0ae591f](https://github.com/freakzlike/i18n-extract/commit/0ae591f48bbaba823751c0344c6501c46e88202f))
+
 # [1.0.0](https://github.com/freakzlike/i18n-extract/compare/v0.2.0...v1.0.0) (2023-07-16)
 
 
