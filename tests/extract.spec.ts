@@ -104,6 +104,51 @@ describe('i18nExtract', () => {
     }))
   })
 
+  it('should extract translations and keep old', async () => {
+    const options = await import('../examples/default/i18n-extract.config.cjs')
+    await i18nExtract({
+      ...options.default,
+      keepMissing: true
+    })
+
+    expect(mockedMkdir).not.toHaveBeenCalled()
+
+    expect(mockedWriteFile).toHaveBeenCalledTimes(2)
+
+    expect(mockedWriteFile).toHaveBeenCalledWith('examples/default/locales/de.json', toJSON({
+      context: {
+        key_1: 'Context Key 1 DE',
+        key_2: 'Context Key 2 DE',
+        nested: {
+          key: 'Nested Key DE',
+          old: 'Old nested key DE'
+        }
+      },
+      key_1: 'Key 1 DE',
+      key_2: 'Key 2 DE',
+      key_3: 'Key 3 DE',
+      key_4: 'Key 4 DE',
+      new_key: '__MISSING_TRANSLATION__',
+      old_key: 'Old key'
+    }))
+    expect(mockedWriteFile).toHaveBeenCalledWith('examples/default/locales/en-GB.json', toJSON({
+      context: {
+        key_1: 'Context Key 1 EN',
+        key_2: 'Context Key 2 EN',
+        nested: {
+          key: 'Nested Key EN',
+          old: 'Old nested key EN'
+        }
+      },
+      key_1: 'Key 1 EN',
+      key_2: 'Key 2 EN',
+      key_3: 'Key 3 EN',
+      key_4: 'Key 4 EN',
+      new_key: '__MISSING_TRANSLATION__',
+      old_key: 'Old key'
+    }))
+  })
+
   it('should extract with missing translations', async () => {
     const options = await import('../examples/default/i18n-extract.config.cjs')
     await i18nExtract({

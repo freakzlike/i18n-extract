@@ -61,6 +61,8 @@ module.exports = {
   // Optional: Default value for new translations
   defaultValue: '__MISSING_TRANSLATION__',
   // Optional: Regex to extract transations from source code
-  parseRegex: /\B\$t\s*\(\s*['"]([\w/: ._-]+)['"]/g
+  parseRegex: /\B\$t\s*\(\s*['"]([\w/: ._-]+)['"]/g,
+  // Optional: Keep missing translations and not delete them
+  keepMissing: false
 }
 ```

@@ -28,4 +28,5 @@ export interface I18nExtractOptions {
   namespaces?: Namespace[]
   defaultValue?: string
   parseRegex?: RegExp
+  keepMissing?: boolean
 }
