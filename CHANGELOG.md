@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/freakzlike/i18n-extract/compare/v1.1.0...v1.2.0) (2024-09-28)
+
+
+### Features
+
+* add keepMissing option ([#66](https://github.com/freakzlike/i18n-extract/issues/66)) ([d091e45](https://github.com/freakzlike/i18n-extract/commit/d091e4536df4b0aaff0f4d18d66fd9ceaa100067))
+
 # [1.1.0](https://github.com/freakzlike/i18n-extract/compare/v1.0.0...v1.1.0) (2023-09-27)
 
 
