@@ -15,14 +15,17 @@ export const generateNewTranslations = async (
   options: I18nExtractOptions
 ): Promise<TranslationMapWrite> => {
   return generateTranslationMap(options, async ({ language, namespace }) => {
-    let translations: TranslationStructure = {}
+    const _existingTranslations = existingTranslations[language]?.[namespace]?.translations || {}
+
+    let translations: TranslationStructure = options.keepMissing
+      ? JSON.parse(JSON.stringify(_existingTranslations))
+      : {}
     let result: TranslationResultWrite = {
       translations,
       untranslatedCount: 0
     }
 
     const _translationKeys = translationKeys[namespace] || []
-    const _existingTranslations = existingTranslations[language]?.[namespace]?.translations || {}
     for (const translationKey of _translationKeys) {
       [translations, result] = await writeTranslationStructure(
         translationKey,

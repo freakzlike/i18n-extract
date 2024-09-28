@@ -4,9 +4,10 @@
   "key_2": "Key 2 DE",
   "key_4": "Key 4 DE",
   "context": {
-    "key_1": "Context Key 1 DE",
     "key_2": "Context Key 2 DE",
+    "key_1": "Context Key 1 DE",
     "nested": {
+      "old": "Old nested key DE",
       "key": "Nested Key DE"
     }
   },

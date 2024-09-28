@@ -79,9 +79,10 @@ describe('loadTranslations', () => {
             key_2: 'Key 2 DE',
             key_4: 'Key 4 DE',
             context: {
-              key_1: 'Context Key 1 DE',
               key_2: 'Context Key 2 DE',
+              key_1: 'Context Key 1 DE',
               nested: {
+                old: 'Old nested key DE',
                 key: 'Nested Key DE'
               }
             },
@@ -98,9 +99,10 @@ describe('loadTranslations', () => {
             key_2: 'Key 2 EN',
             key_4: 'Key 4 EN',
             context: {
-              key_1: 'Context Key 1 EN',
               key_2: 'Context Key 2 EN',
+              key_1: 'Context Key 1 EN',
               nested: {
+                old: 'Old nested key EN',
                 key: 'Nested Key EN'
               }
             },

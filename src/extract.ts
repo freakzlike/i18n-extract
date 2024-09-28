@@ -21,7 +21,14 @@ export const writeTranslations = async (
 ): Promise<void> => {
   await Promise.all(Object.values(translationResults).map(async (languageTranslations) => {
     await Promise.all(Object.values(languageTranslations).map(async ({ filePath, translations }) => {
-      const content = JSON.stringify(translations, undefined, 2)
+
+      // Sort all keys
+      const allKeys = new Set<string>()
+      JSON.stringify(translations, (key, value) => {
+        allKeys.add(key)
+        return value
+      })
+      const content = JSON.stringify(translations, Array.from(allKeys).sort(), 2)
 
       const directory = dirname(filePath)
       if (!existsSync(directory)) {
