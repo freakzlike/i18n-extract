@@ -9,6 +9,11 @@ export default defineConfig({
     }
   },
   test: {
+    coverage: {
+      include: [
+        'src/**/*'
+      ]
+    },
     include: [
       'tests/**/*.spec.ts'
     ]
