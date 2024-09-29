@@ -20,6 +20,8 @@ export type TranslationMap <T extends TranslationResult = TranslationResult> = R
 export type TranslationMapLoad = TranslationMap
 export type TranslationMapWrite = TranslationMap<TranslationResultWrite>
 
+export type CustomParser = (filePath: string, content: string) => (string[] | Set<string>)
+
 export interface I18nExtractOptions {
   input: string[]
   output: string
@@ -28,5 +30,6 @@ export interface I18nExtractOptions {
   namespaces?: Namespace[]
   defaultValue?: string
   parseRegex?: RegExp
+  parser?: CustomParser
   keepMissing?: boolean
 }

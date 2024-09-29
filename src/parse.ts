@@ -44,21 +44,22 @@ export const getFileList = async (
  */
 export const parseFile = async (options: I18nExtractOptions, filePath: string): Promise<TranslationKeyList> => {
   const content = readFileSync(filePath, { encoding: 'utf8' })
-  return parseContent(options, content)
+  return parseContent(options, filePath, content)
 }
 
 /**
  * Parse content and return found translation keys
  */
-export const parseContent = async (options: I18nExtractOptions, content: string): Promise<TranslationKeyList> => {
-  const regex = options.parseRegex ?? /\B\$t\s*\(\s*['"]([\w/: ._-]+)['"]/g
-  const matches: TranslationKeyList = new Set()
-  let match
-  do {
-    match = regex.exec(content)
-    if (match) {
+export const parseContent = async (options: I18nExtractOptions, filePath: string, content: string): Promise<TranslationKeyList> => {
+  if (options.parser) {
+    const results = options.parser(filePath, content)
+    return results instanceof Set ? results : new Set(results)
+  } else {
+    const regex = options.parseRegex ?? /\B\$t\s*\(\s*['"]([\w/: ._-]+)['"]/g
+    const matches: TranslationKeyList = new Set()
+    for (const match of content.matchAll(regex)) {
       matches.add(match[1])
     }
-  } while (match != null)
-  return matches
+    return matches
+  }
 }

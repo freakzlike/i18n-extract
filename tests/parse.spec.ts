@@ -1,7 +1,8 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import path from 'node:path'
 import { getFileList, parseContent, parseFile, parseFiles } from '@/parse'
-import type { I18nExtractOptions } from '@/types'
+import { CustomParser, I18nExtractOptions } from '@/types'
+import { readFileSync } from 'fs'
 
 const options: I18nExtractOptions = {
   input: [
@@ -9,10 +10,11 @@ const options: I18nExtractOptions = {
     'examples/namespaces/src/**/*.ts',
     '!**/__tests__/**'
   ],
-  output: 'examples/default/locales/{{lng}}.json',
+  output: 'examples/namespaces/locales/{{lng}}.json',
   languages: ['de', 'en-GB'],
   defaultNamespace: 'common'
 }
+const getFileContent = (filePath: string) => readFileSync(filePath, { encoding: 'utf8' })
 
 /**
  * parseFiles
@@ -60,6 +62,43 @@ describe('parseFiles', () => {
       'key_1',
       'other_key'
     ])
+  })
+
+  it('should parse all files with custom parser', async () => {
+    const parser = vi.fn<CustomParser>((_, content) =>
+      [...content.matchAll(/\B\$t\s*\('([\w/: _-]+)'/g)].map((matches) => matches[1]))
+    const results = await parseFiles({
+      input: [
+        'examples/default/src/**/*.vue',
+        'examples/default/src/**/*.ts',
+        '!**/__tests__/**'
+      ],
+      output: 'examples/default/locales/{{lng}}.json',
+      languages: ['de', 'en-GB'],
+      parser
+    })
+
+    expect(Object.keys(results).sort()).toStrictEqual(['default'])
+    expect(results.default).toStrictEqual([
+      'key_1',
+      'key_2',
+      'key_4',
+      'new_key'
+    ])
+
+    expect(parser).toHaveBeenCalledTimes(3)
+    expect(parser).toHaveBeenCalledWith(
+      'examples/default/src/i18n.ts',
+      getFileContent('examples/default/src/i18n.ts')
+    )
+    expect(parser).toHaveBeenCalledWith(
+      'examples/default/src/typescript-file.ts',
+      getFileContent('examples/default/src/typescript-file.ts')
+    )
+    expect(parser).toHaveBeenCalledWith(
+      'examples/default/src/vue-file.vue',
+      getFileContent('examples/default/src/vue-file.vue')
+    )
   })
 })
 
@@ -140,7 +179,7 @@ describe('parseFile', () => {
  * parseContent
  */
 describe('parseContent', () => {
-  const parseToArray = async (content: string) => Array.from(await parseContent(options, content))
+  const parseToArray = async (content: string) => Array.from(await parseContent(options, 'some-file.txt', content))
 
   it('should find translations from content', async () => {
     expect(await parseToArray('$t("key_1")')).toStrictEqual(['key_1'])
@@ -185,7 +224,19 @@ describe('parseContent', () => {
     expect(Array.from(await parseContent({
       ...options,
       parseRegex: /\B\$tc\s*\(\s*['"]([\w/: ._-]+)['"]/g
-    }, '$tc("key_1")'))).toStrictEqual(['key_1'])
+    }, 'some-file.txt', '$tc("key_1")'))).toStrictEqual(['key_1'])
+  })
+
+  it('should parse with parser function', async () => {
+    const parser = vi.fn<CustomParser>((_, content) =>
+      [...content.matchAll(/\B\$tx\s*\(\s*['"]([\w/: ._-]+)['"]/g)].map((matches) => matches[1]))
+
+    expect(Array.from(await parseContent({
+      ...options,
+      parser
+    }, 'some-file.txt', '$tx("key_1")'))).toStrictEqual(['key_1'])
+
+    expect(parser).toHaveBeenCalledTimes(1)
+    expect(parser).toHaveBeenCalledWith('some-file.txt', '$tx("key_1")')
   })
 })
-
