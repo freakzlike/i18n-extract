@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/freakzlike/i18n-extract/compare/v1.2.0...v1.3.0) (2024-09-29)
+
+
+### Features
+
+* add parser option ([#67](https://github.com/freakzlike/i18n-extract/issues/67)) ([08b5b1d](https://github.com/freakzlike/i18n-extract/commit/08b5b1d112cdc5c810ada46e6aa301d64d6d8971))
+
 # [1.2.0](https://github.com/freakzlike/i18n-extract/compare/v1.1.0...v1.2.0) (2024-09-28)
 
 
