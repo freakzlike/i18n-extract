@@ -79,11 +79,11 @@ describe('loadTranslations', () => {
             key_2: 'Key 2 DE',
             key_4: 'Key 4 DE',
             context: {
-              key_2: 'Context Key 2 DE',
-              key_1: 'Context Key 1 DE',
+              key_2: 'Context Key 2\u2060 DE',
+              key_1: 'Context Key 1\u200b DE',
               nested: {
                 old: 'Old nested key DE',
-                key: 'Nested Key DE'
+                key: 'Nested Key\u00A0 DE'
               }
             },
             old_key: 'Old key'
