@@ -16,6 +16,11 @@ beforeEach(() => {
 })
 
 const toJSON = (v: unknown) => `${JSON.stringify(v, undefined, 2)}\n`
+  .replaceAll('\u2060', '\\u2060')
+  .replaceAll('\u200B', '\\u200B')
+  .replaceAll('\u200b', '\\u200b')
+  .replaceAll('\u00A0', '\\u00A0')
+  .replaceAll('\u00a0', '\\u00a0')
 
 /**
  * i18nExtract
@@ -76,10 +81,10 @@ describe('i18nExtract', () => {
 
     expect(mockedWriteFile).toHaveBeenCalledWith('examples/default/locales/de.json', toJSON({
       context: {
-        key_1: 'Context Key 1 DE',
-        key_2: 'Context Key 2 DE',
+        key_1: 'Context Key 1\u200B DE',
+        key_2: 'Context Key 2\u2060 DE',
         nested: {
-          key: 'Nested Key DE'
+          key: 'Nested Key\u00A0 DE'
         }
       },
       key_1: 'Key 1 DE',
@@ -117,10 +122,10 @@ describe('i18nExtract', () => {
 
     expect(mockedWriteFile).toHaveBeenCalledWith('examples/default/locales/de.json', toJSON({
       context: {
-        key_1: 'Context Key 1 DE',
-        key_2: 'Context Key 2 DE',
+        key_1: 'Context Key 1\u200B DE',
+        key_2: 'Context Key 2\u2060 DE',
         nested: {
-          key: 'Nested Key DE',
+          key: 'Nested Key\u00A0 DE',
           old: 'Old nested key DE'
         }
       },
