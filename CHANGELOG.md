@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/freakzlike/i18n-extract/compare/v1.3.0...v1.3.1) (2024-10-12)
+
+
+### Bug Fixes
+
+* keep specific unicode symbols ([#70](https://github.com/freakzlike/i18n-extract/issues/70)) ([cddb14f](https://github.com/freakzlike/i18n-extract/commit/cddb14f21e0e003127d0b86e7bb4190ac95d056d))
+
 # [1.3.0](https://github.com/freakzlike/i18n-extract/compare/v1.2.0...v1.3.0) (2024-09-29)
 
 
