@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/freakzlike/i18n-extract/compare/v1.3.1...v1.4.0) (2024-10-13)
+
+
+### Features
+
+* keep specific suffixes ([#71](https://github.com/freakzlike/i18n-extract/issues/71)) ([99cb946](https://github.com/freakzlike/i18n-extract/commit/99cb946586ab13ff4709f801241b40ab6749e567))
+
 ## [1.3.1](https://github.com/freakzlike/i18n-extract/compare/v1.3.0...v1.3.1) (2024-10-12)
 
 
