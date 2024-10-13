@@ -91,6 +91,7 @@ describe('i18nExtract', () => {
       key_2: 'Key 2 DE',
       key_3: 'Key 3 DE',
       key_4: 'Key 4 DE',
+      key_4_plural: 'Key 4 DE plural',
       new_key: '__MISSING_TRANSLATION__'
     }))
     expect(mockedWriteFile).toHaveBeenCalledWith('examples/default/locales/en-GB.json', toJSON({
@@ -105,6 +106,7 @@ describe('i18nExtract', () => {
       key_2: 'Key 2 EN',
       key_3: 'Key 3 EN',
       key_4: 'Key 4 EN',
+      key_4_plural: 'Key 4 EN plural',
       new_key: '__MISSING_TRANSLATION__'
     }))
   })
@@ -133,6 +135,8 @@ describe('i18nExtract', () => {
       key_2: 'Key 2 DE',
       key_3: 'Key 3 DE',
       key_4: 'Key 4 DE',
+      key_4_other: 'Key 4 DE other',
+      key_4_plural: 'Key 4 DE plural',
       new_key: '__MISSING_TRANSLATION__',
       old_key: 'Old key'
     }))
@@ -149,6 +153,8 @@ describe('i18nExtract', () => {
       key_2: 'Key 2 EN',
       key_3: 'Key 3 EN',
       key_4: 'Key 4 EN',
+      key_4_other: 'Key 4 EN other',
+      key_4_plural: 'Key 4 EN plural',
       new_key: '__MISSING_TRANSLATION__',
       old_key: 'Old key'
     }))

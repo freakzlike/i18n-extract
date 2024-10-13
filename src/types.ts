@@ -32,4 +32,5 @@ export interface I18nExtractOptions {
   parseRegex?: RegExp
   parser?: CustomParser
   keepMissing?: boolean
+  suffixes?: string[]
 }

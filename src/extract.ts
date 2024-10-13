@@ -31,9 +31,7 @@ export const writeTranslations = async (
       const content = JSON.stringify(translations, Array.from(allKeys).sort(), 2)
         .replaceAll('\u2060', '\\u2060')
         .replaceAll('\u200B', '\\u200B')
-        .replaceAll('\u200b', '\\u200b')
         .replaceAll('\u00A0', '\\u00A0')
-        .replaceAll('\u00a0', '\\u00a0')
 
       const directory = dirname(filePath)
       if (!existsSync(directory)) {

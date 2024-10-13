@@ -5,5 +5,6 @@ module.exports = {
     '!**/__tests__/**'
   ],
   output: 'examples/default/locales/{{lng}}.json',
-  languages: ['de', 'en-GB']
+  languages: ['de', 'en-GB'],
+  suffixes: ['_plural']
 }
