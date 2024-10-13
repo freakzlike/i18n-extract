@@ -138,7 +138,8 @@ describe('i18nExtract', () => {
       key_4_other: 'Key 4 DE other',
       key_4_plural: 'Key 4 DE plural',
       new_key: '__MISSING_TRANSLATION__',
-      old_key: 'Old key'
+      old_key: 'Old key',
+      old_key_plural: 'Old key plural'
     }))
     expect(mockedWriteFile).toHaveBeenCalledWith('examples/default/locales/en-GB.json', toJSON({
       context: {

@@ -88,7 +88,8 @@ describe('loadTranslations', () => {
                 key: 'Nested Key\u00A0 DE'
               }
             },
-            old_key: 'Old key'
+            old_key: 'Old key',
+            old_key_plural: 'Old key plural'
           }
         }
       },
