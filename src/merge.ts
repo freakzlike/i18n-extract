@@ -89,5 +89,20 @@ export const writeTranslationStructure = async (
   if (translations[translationKey] === defaultTranslation) {
     result.untranslatedCount++
   }
+
+  // Additional suffixes
+  if (options.suffixes?.length) {
+    for (const suffix of options.suffixes) {
+      const key = [translationKey, suffix].join('')
+      if (typeof existingTranslations[key] === 'string') {
+        translations[key] = existingTranslations[key]
+
+        if (translations[key] === defaultTranslation) {
+          result.untranslatedCount++
+        }
+      }
+    }
+  }
+
   return [translations, result]
 }

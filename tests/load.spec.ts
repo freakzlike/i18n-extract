@@ -78,6 +78,8 @@ describe('loadTranslations', () => {
             key_1: 'Key 1 DE',
             key_2: 'Key 2 DE',
             key_4: 'Key 4 DE',
+            key_4_plural: 'Key 4 DE plural',
+            key_4_other: 'Key 4 DE other',
             context: {
               key_2: 'Context Key 2\u2060 DE',
               key_1: 'Context Key 1\u200b DE',
@@ -86,7 +88,8 @@ describe('loadTranslations', () => {
                 key: 'Nested Key\u00A0 DE'
               }
             },
-            old_key: 'Old key'
+            old_key: 'Old key',
+            old_key_plural: 'Old key plural'
           }
         }
       },
@@ -98,6 +101,8 @@ describe('loadTranslations', () => {
             key_1: 'Key 1 EN',
             key_2: 'Key 2 EN',
             key_4: 'Key 4 EN',
+            key_4_plural: 'Key 4 EN plural',
+            key_4_other: 'Key 4 EN other',
             context: {
               key_2: 'Context Key 2 EN',
               key_1: 'Context Key 1 EN',

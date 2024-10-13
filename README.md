@@ -77,6 +77,10 @@ module.exports = {
   parser: (filePath, content) =>
     [...content.matchAll(/\B\$t\s*\(\s*['"]([\w/: ._-]+)['"]/g)].map((matches) => matches[1]),
   // Optional: Keep missing translations and not delete them
-  keepMissing: false
+  keepMissing: false,
+  // Optional: Suffixes to keep
+  // Example: If key `key_1` is used then `key_1_plural` will not be deleted
+  // Default: []
+  suffixes: ['_plural']
 }
 ```
