@@ -14,7 +14,7 @@ export const generateNewTranslations = async (
   existingTranslations: TranslationMapLoad,
   options: I18nExtractOptions
 ): Promise<TranslationMapWrite> => {
-  return generateTranslationMap(options, async ({ language, namespace }) => {
+  return generateTranslationMap(options, async ({ language, namespace, filePath }) => {
     const _existingTranslations = existingTranslations[language]?.[namespace]?.translations || {}
 
     let translations: TranslationStructure = options.keepMissing
@@ -27,13 +27,17 @@ export const generateNewTranslations = async (
 
     const _translationKeys = translationKeys[namespace] || []
     for (const translationKey of _translationKeys) {
-      [translations, result] = await writeTranslationStructure(
+      [translations, result] = await writeTranslationStructure({
         translationKey,
-        _existingTranslations,
+        filePath,
+        language,
+        namespace,
+        fullTranslationKey: translationKey,
+        existingTranslations: _existingTranslations,
         translations,
         result,
         options
-      )
+      })
     }
 
     return {
@@ -50,24 +54,33 @@ const mapTranslationStructure = (
   : translationValue
 
 export const writeTranslationStructure = async (
-  translationKey: string,
-  existingTranslations: TranslationStructure,
-  translations: TranslationStructure,
-  result: TranslationResultWrite,
-  options: I18nExtractOptions
-): Promise<[TranslationStructure, TranslationResultWrite]> => {
+  { translationKey, filePath, language, namespace, fullTranslationKey, existingTranslations, translations, result, options }: {
+    translationKey: string,
+    filePath: string,
+    language: string,
+    namespace: string,
+    fullTranslationKey: string,
+    existingTranslations: TranslationStructure,
+    translations: TranslationStructure,
+    result: TranslationResultWrite,
+    options: I18nExtractOptions
+  }): Promise<[TranslationStructure, TranslationResultWrite]> => {
   const contextIdx = translationKey.indexOf('.')
   // Nested translation
   if (contextIdx > -1) {
     const context = translationKey.substring(0, contextIdx)
     const nestedKey = translationKey.substring(contextIdx + 1)
-    const [_translations, _result] = await writeTranslationStructure(
-      nestedKey,
-      mapTranslationStructure(existingTranslations[context]),
-      mapTranslationStructure(translations[context]),
+    const [_translations, _result] = await writeTranslationStructure({
+      translationKey: nestedKey,
+      filePath,
+      language,
+      namespace,
+      fullTranslationKey,
+      existingTranslations: mapTranslationStructure(existingTranslations[context]),
+      translations: mapTranslationStructure(translations[context]),
       result,
       options
-    )
+    })
 
     translations[context] = _translations
 
@@ -87,6 +100,7 @@ export const writeTranslationStructure = async (
     translations[translationKey] = defaultTranslation
   }
   if (translations[translationKey] === defaultTranslation) {
+    console.info(`Missing translation for key: "${fullTranslationKey}" in file: ${filePath}`)
     result.untranslatedCount++
   }
 

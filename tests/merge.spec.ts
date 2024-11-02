@@ -1,27 +1,42 @@
 import { describe, expect, it } from 'vitest'
 import { writeTranslationStructure } from '@/merge'
-import { I18nExtractOptions } from '@/types'
 
 /**
  * writeTranslationStructure
  */
 describe('writeTranslationStructure', () => {
-  const defaultOptions: I18nExtractOptions = {
-    input: ['src/**'],
-    output: 'examples/default/locales/{{lng}}.json',
-    languages: ['de', 'en-GB']
-  }
-
-  it('should write simple translation key', async () => {
-    expect(await writeTranslationStructure('key_1', {
-      key_1: 'Key 1',
-      key_2: 'Key 2'
-    }, {}, {
+  const defaultParams = (translationKey: string): Omit<Parameters<typeof writeTranslationStructure>[0], 'existingTranslations'> => ({
+    translationKey,
+    fullTranslationKey: translationKey,
+    filePath: 'examples/default/locales/en.json',
+    language: 'en',
+    namespace: 'default',
+    translations: {},
+    result: {
       translations: {},
       untranslatedCount: 0
-    }, defaultOptions)).toStrictEqual([
+    },
+    options: {
+      input: ['src/**'],
+      output: 'examples/default/locales/{{lng}}.json',
+      languages: ['de', 'en-GB'],
+      suffixes: ['_plural']
+    }
+  })
+
+  it('should write simple translation key', async () => {
+    expect(await writeTranslationStructure({
+      ...defaultParams('key_1'),
+      existingTranslations: {
+        key_1: 'Key 1',
+        key_1_plural: 'Key 1 plural',
+        key_1_other: 'Key 1 other',
+        key_2: 'Key 2'
+      }
+    })).toStrictEqual([
       {
-        key_1: 'Key 1'
+        key_1: 'Key 1',
+        key_1_plural: 'Key 1 plural'
       },
       {
         translations: expect.any(Object),
@@ -31,14 +46,15 @@ describe('writeTranslationStructure', () => {
   })
 
   it('should merge simple translation key', async () => {
-    expect(await writeTranslationStructure('key_1', {
-      key_1: 'Key 1'
-    }, {
-      key_2: 'Key 2'
-    }, {
-      translations: {},
-      untranslatedCount: 0
-    }, defaultOptions)).toStrictEqual([
+    expect(await writeTranslationStructure({
+      ...defaultParams('key_1'),
+      existingTranslations: {
+        key_1: 'Key 1'
+      },
+      translations: {
+        key_2: 'Key 2'
+      }
+    })).toStrictEqual([
       {
         key_1: 'Key 1',
         key_2: 'Key 2'
@@ -51,12 +67,12 @@ describe('writeTranslationStructure', () => {
   })
 
   it('should write simple translation key with missing translation', async () => {
-    expect(await writeTranslationStructure('key_1', {
-      key_2: 'Key 2'
-    }, {}, {
-      translations: {},
-      untranslatedCount: 0
-    }, defaultOptions)).toStrictEqual([
+    expect(await writeTranslationStructure({
+      ...defaultParams('key_1'),
+      existingTranslations: {
+        key_2: 'Key 2'
+      }
+    })).toStrictEqual([
       {
         key_1: '__MISSING_TRANSLATION__'
       },
@@ -68,14 +84,20 @@ describe('writeTranslationStructure', () => {
   })
 
   it('should write simple translation key with missing translation', async () => {
-    expect(await writeTranslationStructure('key_1', {
-      key_2: 'Key 2'
-    }, {}, {
-      translations: {},
-      untranslatedCount: 5
-    }, {
-      ...defaultOptions,
-      defaultValue: '__NEW_KEY__'
+   const params = defaultParams('key_1')
+    expect(await writeTranslationStructure({
+      ...params,
+      existingTranslations: {
+        key_2: 'Key 2'
+      },
+      result: {
+        translations: {},
+        untranslatedCount: 5
+      },
+      options: {
+        ...params.options,
+        defaultValue: '__NEW_KEY__'
+      }
     })).toStrictEqual([
       {
         key_1: '__NEW_KEY__'
@@ -87,15 +109,34 @@ describe('writeTranslationStructure', () => {
     ])
   })
 
-  it('should write missing translation key if different context', async () => {
-    expect(await writeTranslationStructure('key_1', {
-      key_1: {
-        nested: '1'
+  it('should write and count missing translation key', async () => {
+    expect(await writeTranslationStructure({
+      ...defaultParams('key_1'),
+      existingTranslations: {
+        key_1: '__MISSING_TRANSLATION__',
+        key_1_plural: '__MISSING_TRANSLATION__'
       }
-    }, {}, {
-      translations: {},
-      untranslatedCount: 0
-    }, defaultOptions)).toStrictEqual([
+    })).toStrictEqual([
+      {
+        key_1: '__MISSING_TRANSLATION__',
+        key_1_plural: '__MISSING_TRANSLATION__'
+      },
+      {
+        translations: expect.any(Object),
+        untranslatedCount: 2
+      }
+    ])
+  })
+
+  it('should write missing translation key if different context', async () => {
+    expect(await writeTranslationStructure({
+      ...defaultParams('key_1'),
+      existingTranslations: {
+        key_1: {
+          nested: '1'
+        }
+      }
+    })).toStrictEqual([
       {
         key_1: '__MISSING_TRANSLATION__'
       },
@@ -107,15 +148,15 @@ describe('writeTranslationStructure', () => {
   })
 
   it('should write nested translation key', async () => {
-    expect(await writeTranslationStructure('context.nested', {
-      context: {
-        nested: 'Nested translation',
-        other: 'other'
+    expect(await writeTranslationStructure({
+      ...defaultParams('context.nested'),
+      existingTranslations: {
+        context: {
+          nested: 'Nested translation',
+          other: 'other'
+        }
       }
-    }, {}, {
-      translations: {},
-      untranslatedCount: 0
-    }, defaultOptions)).toStrictEqual([
+    })).toStrictEqual([
       {
         context: {
           nested: 'Nested translation'
@@ -129,18 +170,18 @@ describe('writeTranslationStructure', () => {
   })
 
   it('should write multiple nested translation key', async () => {
-    expect(await writeTranslationStructure('context.nested.more.key', {
-      context: {
-        nested: {
-          more: {
-            key: 'Key'
+    expect(await writeTranslationStructure({
+      ...defaultParams('context.nested.more.key'),
+      existingTranslations: {
+        context: {
+          nested: {
+            more: {
+              key: 'Key'
+            }
           }
         }
       }
-    }, {}, {
-      translations: {},
-      untranslatedCount: 0
-    }, defaultOptions)).toStrictEqual([
+    })).toStrictEqual([
       {
         context: {
           nested: {
@@ -158,14 +199,18 @@ describe('writeTranslationStructure', () => {
   })
 
   it('should write nested translation key with missing translation', async () => {
-    expect(await writeTranslationStructure('context.nested', {
-      context: {
-        other: 'other'
+    expect(await writeTranslationStructure({
+      ...defaultParams('context.nested'),
+      existingTranslations: {
+        context: {
+          other: 'other'
+        }
+      },
+      result: {
+        translations: {},
+        untranslatedCount: 2
       }
-    }, {}, {
-      translations: {},
-      untranslatedCount: 2
-    }, defaultOptions)).toStrictEqual([
+    })).toStrictEqual([
       {
         context: {
           nested: '__MISSING_TRANSLATION__'
@@ -179,19 +224,20 @@ describe('writeTranslationStructure', () => {
   })
 
   it('should merge nested translation key', async () => {
-    expect(await writeTranslationStructure('context.nested', {
-      context: {
-        nested: 'Nested translation'
+    expect(await writeTranslationStructure({
+      ...defaultParams('context.nested'),
+      existingTranslations: {
+        context: {
+          nested: 'Nested translation'
+        }
+      },
+      translations: {
+        key: 'key',
+        context: {
+          other: 'other'
+        }
       }
-    }, {
-      key: 'key',
-      context: {
-        other: 'other'
-      }
-    }, {
-      translations: {},
-      untranslatedCount: 0
-    }, defaultOptions)).toStrictEqual([
+    })).toStrictEqual([
       {
         key: 'key',
         context: {
@@ -207,16 +253,17 @@ describe('writeTranslationStructure', () => {
   })
 
   it('should handle existing string on nested translation', async () => {
-    expect(await writeTranslationStructure('context.nested', {
-      context: {
-        nested: 'Nested translation'
+    expect(await writeTranslationStructure({
+      ...defaultParams('context.nested'),
+      existingTranslations: {
+        context: {
+          nested: 'Nested translation'
+        }
+      },
+      translations: {
+        context: 'Context'
       }
-    }, {
-      context: 'Context'
-    }, {
-      translations: {},
-      untranslatedCount: 0
-    }, defaultOptions)).toStrictEqual([
+    })).toStrictEqual([
       {
         context: {
           nested: 'Nested translation'
