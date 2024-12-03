@@ -42,6 +42,7 @@ describe('i18nExtract', () => {
           key: 'Nested Key DE'
         }
       },
+      'invalid:nested:key': '__MISSING_TRANSLATION__',
       key_1: 'Key 1 DE',
       key_2: 'Key 2 DE',
       key_3: 'Key 3 DE',
@@ -60,6 +61,7 @@ describe('i18nExtract', () => {
           key: 'Nested Key EN'
         }
       },
+      'invalid:nested:key': '__MISSING_TRANSLATION__',
       key_1: 'Key 1 EN',
       key_2: 'Key 2 EN',
       key_3: 'Key 3 EN',

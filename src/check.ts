@@ -16,13 +16,17 @@ export const i18nCheck = async (
 
 const checkUntranslated = async (translationResults: TranslationMapWrite): Promise<boolean> => {
   let hasUntranslated = false
+  let hasOtherError = false
   for (const languageTranslations of Object.values(translationResults)) {
-    for (const { filePath, untranslatedCount} of Object.values(languageTranslations)) {
+    for (const { filePath, untranslatedCount, otherError } of Object.values(languageTranslations)) {
       if (untranslatedCount) {
         hasUntranslated = true
         console.log(`${filePath} has untranslated messages!`)
       }
+      if (otherError) {
+        hasOtherError = true
+      }
     }
   }
-  return !hasUntranslated
+  return !hasUntranslated && !hasOtherError
 }

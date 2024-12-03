@@ -15,8 +15,9 @@ export const parseFiles = async (
   await Promise.all(files.map(async filePath => {
     const fileResults = await parseFile(options, filePath)
     fileResults.forEach(fullKey => {
-      const [namespace, key] = fullKey.includes(':')
-        ? fullKey.split(':', 2)
+      const namespaceIndex = fullKey.indexOf(':')
+      const [namespace, key] = namespaceIndex > 0
+        ? [fullKey.substring(0, namespaceIndex), fullKey.substring(namespaceIndex + 1)]
         : [defaultNamespace, fullKey]
 
       if (!results[namespace]) {

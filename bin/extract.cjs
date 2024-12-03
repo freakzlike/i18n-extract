@@ -9,4 +9,8 @@ if (!args.length || !args[0]) {
 }
 
 const options = require(path.resolve(process.cwd(), args[0]))
-i18nExtract(options)
+i18nExtract(options).then(result => {
+  if (!result) {
+    process.exit(1)
+  }
+})

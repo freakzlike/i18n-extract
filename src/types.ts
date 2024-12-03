@@ -13,6 +13,7 @@ export interface TranslationResult {
 
 export interface TranslationResultWrite extends TranslationResult {
   untranslatedCount: number
+  otherError?: boolean
 }
 
 export type TranslationMap <T extends TranslationResult = TranslationResult> = Record<Language, Record<Namespace, T & { filePath: string}>>

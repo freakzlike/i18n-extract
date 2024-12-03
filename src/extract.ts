@@ -14,6 +14,8 @@ export const i18nExtract = async (
 
   const translationResults = await generateNewTranslations(translationKeys, existingTranslations, options)
   await writeTranslations(translationResults)
+
+  return true
 }
 
 export const writeTranslations = async (

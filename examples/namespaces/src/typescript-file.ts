@@ -17,6 +17,11 @@ $t('context.nested.key')
 $t('new_key')
 
 /**
+ * Invalid usages
+ */
+$t('common:invalid:nested:key')
+
+/**
  * Not parse this
  */
 const $a = $t

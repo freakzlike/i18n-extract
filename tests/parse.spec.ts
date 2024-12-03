@@ -28,6 +28,7 @@ describe('parseFiles', () => {
       'context.key_1',
       'context.key_2',
       'context.nested.key',
+      'invalid:nested:key',
       'key_1',
       'key_2',
       'key_3',
@@ -56,6 +57,7 @@ describe('parseFiles', () => {
       'new_key'
     ])
     expect(results.common).toStrictEqual([
+      'invalid:nested:key',
       'key_2'
     ])
     expect(results.other).toStrictEqual([
@@ -153,6 +155,7 @@ describe('parseFile', () => {
   it('should parse translations of typescript file', async () => {
     const filePath = path.join(__dirname, '../examples/namespaces/src/typescript-file.ts')
     expect(await parseFile(options, filePath)).toStrictEqual(new Set([
+      'common:invalid:nested:key',
       'key_1',
       'common:key_2',
       'other:key_1',
