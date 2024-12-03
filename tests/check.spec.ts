@@ -48,4 +48,12 @@ describe('i18nCheck', () => {
     expect(spyConsole).toHaveBeenCalledWith('examples/new/locales/de/other.json has untranslated messages!')
     expect(spyConsole).toHaveBeenCalledWith('examples/new/locales/en-GB/other.json has untranslated messages!')
   })
+
+  it('should check translations with error', async () => {
+    const options = await import('../examples/error/i18n-extract.config.cjs')
+    expect(await i18nCheck(options.default)).toBe(false)
+
+    expect(spyConsole).toHaveBeenCalledTimes(1)
+    expect(spyConsole).toHaveBeenCalledWith('examples/error/locales/en.json has untranslated messages!')
+  })
 })

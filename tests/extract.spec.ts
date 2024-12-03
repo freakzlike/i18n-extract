@@ -28,7 +28,7 @@ const toJSON = (v: unknown) => `${JSON.stringify(v, undefined, 2)}\n`
 describe('i18nExtract', () => {
   it('should extract translations with namespace', async () => {
     const options = await import('../examples/namespaces/i18n-extract.config.cjs')
-    await i18nExtract(options.default)
+    expect(await i18nExtract(options.default)).toBe(true)
 
     expect(mockedMkdir).not.toHaveBeenCalled()
 
@@ -75,7 +75,7 @@ describe('i18nExtract', () => {
 
   it('should extract translations without namespace', async () => {
     const options = await import('../examples/default/i18n-extract.config.cjs')
-    await i18nExtract(options.default)
+    expect(await i18nExtract(options.default)).toBe(true)
 
     expect(mockedMkdir).not.toHaveBeenCalled()
 
@@ -115,10 +115,10 @@ describe('i18nExtract', () => {
 
   it('should extract translations and keep old', async () => {
     const options = await import('../examples/default/i18n-extract.config.cjs')
-    await i18nExtract({
+    expect(await i18nExtract({
       ...options.default,
       keepMissing: true
-    })
+    })).toBe(true)
 
     expect(mockedMkdir).not.toHaveBeenCalled()
 
@@ -165,11 +165,11 @@ describe('i18nExtract', () => {
 
   it('should extract with missing translations', async () => {
     const options = await import('../examples/default/i18n-extract.config.cjs')
-    await i18nExtract({
+    expect(await i18nExtract({
       ...options.default,
       output: 'examples/tmp/locales/{{lng}}.json',
       languages: ['fr']
-    })
+    })).toBe(true)
 
     expect(mockedMkdir).toHaveBeenCalledTimes(1)
     expect(mockedMkdir).toHaveBeenCalledWith('examples/tmp/locales', { recursive: true })
@@ -193,7 +193,7 @@ describe('i18nExtract', () => {
 
   it('should extract translations all translated', async () => {
     const options = await import('../examples/translated/i18n-extract.config.cjs')
-    await i18nExtract(options.default)
+    expect(await i18nExtract(options.default)).toBe(true)
 
     expect(mockedMkdir).not.toHaveBeenCalled()
 
@@ -213,7 +213,7 @@ describe('i18nExtract', () => {
 
   it('should extract translations with new translation', async () => {
     const options = await import('../examples/new/i18n-extract.config.cjs')
-    await i18nExtract(options.default)
+    expect(await i18nExtract(options.default)).toBe(true)
 
     expect(mockedMkdir).not.toHaveBeenCalled()
 
@@ -233,6 +233,21 @@ describe('i18nExtract', () => {
     }))
     expect(mockedWriteFile).toHaveBeenCalledWith('examples/new/locales/en-GB/other.json', toJSON({
       key_1: '__MISSING_TRANSLATION__'
+    }))
+  })
+
+  it('should extract translations with error', async () => {
+    const options = await import('../examples/error/i18n-extract.config.cjs')
+    expect(await i18nExtract(options.default)).toBe(true)
+
+    expect(mockedMkdir).not.toHaveBeenCalled()
+
+    expect(mockedWriteFile).toHaveBeenCalledTimes(1)
+    expect(mockedWriteFile).toHaveBeenCalledWith('examples/error/locales/en.json', toJSON({
+      nested_key: {
+        key_1: 'Nested Key translation'
+      },
+      other_key: 'Other Key'
     }))
   })
 })

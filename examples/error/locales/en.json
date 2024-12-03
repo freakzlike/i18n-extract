@@ -1,0 +1,6 @@
+{
+  "nested_key": {
+    "key_1": "Nested Key translation"
+  },
+  "other_key": "Other Key"
+}
