@@ -1,3 +1,12 @@
+# [1.5.0](https://github.com/freakzlike/i18n-extract/compare/v1.4.0...v1.5.0) (2024-12-03)
+
+
+### Features
+
+* Handle multiple ":" in translation keys ([5ca8ec5](https://github.com/freakzlike/i18n-extract/commit/5ca8ec5ebca0768ce0b50d1350bc5e1c3564676b)), closes [#73](https://github.com/freakzlike/i18n-extract/issues/73)
+* Print missing translation keys on extract and check ([6f76d33](https://github.com/freakzlike/i18n-extract/commit/6f76d336db66028c5374d5f2377ba5e923c3a22e)), closes [#72](https://github.com/freakzlike/i18n-extract/issues/72)
+* Show untranslated error for invalid nested keys ([eba4750](https://github.com/freakzlike/i18n-extract/commit/eba47507e142d5da43672bf28af5dab30a3c9984)), closes [#74](https://github.com/freakzlike/i18n-extract/issues/74)
+
 # [1.4.0](https://github.com/freakzlike/i18n-extract/compare/v1.3.1...v1.4.0) (2024-10-13)
 
 
