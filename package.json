@@ -51,7 +51,7 @@
     "@rollup/plugin-typescript": "12.1.4",
     "@semantic-release/changelog": "6.0.3",
     "@semantic-release/git": "10.0.1",
-    "@types/node": "22.18.8",
+    "@types/node": "24.9.1",
     "@vitest/coverage-v8": "4.0.4",
     "eslint": "9.36.0",
     "globals": "16.4.0",
